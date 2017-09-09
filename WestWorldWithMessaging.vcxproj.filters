@@ -42,7 +42,7 @@
     <ClCompile Include="MinersWifeOwnedStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Common\Time\CrudeTimer.cpp">
+    <ClCompile Include="..\Common\Time\CrudeTimer.cpp">
       <Filter>misc</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,22 +86,22 @@
     <ClInclude Include="..\..\Common\Messaging\Telegram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\misc\ConsoleUtils.h">
+    <ClInclude Include="..\Common\ConsoleUtils.h">
       <Filter>misc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\ConsoleUtils.h">
+    <ClInclude Include="..\Common\misc\ConsoleUtils.h">
       <Filter>misc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\Time\CrudeTimer.h">
+    <ClInclude Include="..\Common\Time\CrudeTimer.h">
       <Filter>misc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\2D\SVector2D.h">
+    <ClInclude Include="..\Common\2D\SVector2D.h">
       <Filter>misc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\utils.h">
+    <ClInclude Include="..\Common\utils.h">
       <Filter>misc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\misc\utils.h">
+    <ClInclude Include="..\Common\misc\utils.h">
       <Filter>misc</Filter>
     </ClInclude>
   </ItemGroup>

@@ -33,7 +33,7 @@ int main()
   EntityMgr->RegisterEntity(Elsa);
 
   //run Bob and Elsa through a few Update calls
-  for (int i=0; i<30; ++i)
+  for (int i=0; i<100; ++i)
   { 
     Bob->Update();
     Elsa->Update();
