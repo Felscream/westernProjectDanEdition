@@ -23,7 +23,7 @@
 //above this value Dan is drunk
 const int DrunknessLevel = 5;
 //above this value Dan passes out
-const int KOThreshold = 5;
+const int KOThreshold = 0;
 
 
 
@@ -43,7 +43,7 @@ private:
 public:
 
 	Drunkard(int id) :m_iDrunkness(0),
-		m_iKO(0),
+		m_iKO(5),
 		BaseGameEntity(id)
 
 	{
@@ -71,14 +71,16 @@ public:
 	//-------------------------------------------------------------accessors
 	//location_type Location()const { return m_Location; }
 
-	bool          isKO()const;
+	bool          KOed()const;
 	void          DecreaseKO() { m_iKO -= 1; }
-	void          IncreaseKO() { m_iKO += 1; }
 
 	bool          isDrunk()const;
 	void          DrinkAWhiskey() { m_iDrunkness += 1; }
 
+	void		  Sleeping() { m_iKO += 1; m_iDrunkness -= 1; }
+	bool		  isSleeping();
 
+	int			  getDrunkness() { return m_iDrunkness; }
 };
 
 

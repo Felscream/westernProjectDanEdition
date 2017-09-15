@@ -24,10 +24,16 @@ bool Drunkard::isDrunk()const {
 	return false;
 }
 
-bool Drunkard::isKO()const {
+bool Drunkard::KOed()const {
 	if (m_iKO > KOThreshold)
 		return true;
 	return false;
+}
+
+bool Drunkard::isSleeping(){
+	if (m_iKO >= 5)
+		return false;
+	return true;
 }
 
 /*void Drunkard::AddToGoldCarried(const int val)

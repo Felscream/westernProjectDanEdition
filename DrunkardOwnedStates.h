@@ -72,19 +72,17 @@ public:
 
 };
 
-
-
-
-class FightWithBob : public State<Drunkard> {
+class SleepAndSoberUpDan : public State<Drunkard> {
 private:
 
-	FightWithBob() {}
-	FightWithBob(const FightWithBob&);
-	FightWithBob& operator=(const FightWithBob&);
+	SleepAndSoberUpDan(){}
+	SleepAndSoberUpDan(const SleepAndSoberUpDan&);
+	SleepAndSoberUpDan& operator=(const SleepAndSoberUpDan&);
 
 public:
 
-	static FightWithBob* Instance();
+	//this is a singleton
+	static SleepAndSoberUpDan* Instance();
 
 	virtual void Enter(Drunkard* Drunkard);
 
@@ -95,7 +93,6 @@ public:
 	virtual bool OnMessage(Drunkard* agent, const Telegram& msg);
 
 };
-
 
 //------------------------------------------------------------------------
 //
