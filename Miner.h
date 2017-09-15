@@ -46,7 +46,7 @@ private:
   //how many nuggets the miner has in his pockets
   int                   m_iGoldCarried;
 
-  int                   m_iMoneyInBank;
+  float                   m_iMoneyInBank;
 
   //the higher the value, the thirstier the miner
   int                   m_iThirst;
@@ -64,6 +64,8 @@ public:
                           BaseGameEntity(id)
                                
   {
+	 m_iKO = 5;
+
     //set up state machine
     m_pStateMachine = new StateMachine<Miner>(this);
     
@@ -95,15 +97,23 @@ public:
   bool          PocketsFull()const{return m_iGoldCarried >= MaxNuggets;}
 
   bool          Fatigued()const;
-  void          DecreaseFatigue(){m_iFatigue -= 1;}
+  void          DecreaseFatigue() { m_iFatigue -= 1; if (m_iFatigue < 0) { m_iFatigue = 0; } }
   void          IncreaseFatigue(){m_iFatigue += 1;}
 
-  int           Wealth()const{return m_iMoneyInBank;}
-  void          SetWealth(int val){m_iMoneyInBank = val;}
+  float           Wealth()const{return m_iMoneyInBank;}
+  void          SetWealth(float val){m_iMoneyInBank = val;}
   void          AddToWealth(int val);
 
   bool          Thirsty()const; 
-  void          BuyAndDrinkAWhiskey(){m_iThirst = 0; m_iMoneyInBank-=2;}
+  void          BuyAndDrinkAWhiskey(){
+	  m_iThirst -= 3;
+	  if (m_iThirst < 0) {
+		  m_iThirst = 0;
+	  }
+	  m_iMoneyInBank-=0.5;
+  }
+
+  bool			Hydrated()const;
 
 };
 

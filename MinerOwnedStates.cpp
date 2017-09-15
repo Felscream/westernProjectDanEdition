@@ -7,6 +7,7 @@
 #include "MessageTypes.h"
 #include "Time/CrudeTimer.h"
 #include "EntityNames.h"
+#include "misc/Utils.h"
 
 #include <iostream>
 using std::cout;
@@ -230,13 +231,13 @@ void QuenchThirst::Enter(Miner* pMiner)
     pMiner->ChangeLocation(saloon);
 
     cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Boy, ah sure is thusty! Walking to the saloon";
-
-	Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-		pMiner->ID(),        //ID of sender
-		ent_Dan,            //ID of recipient
-		Msg_ImInTheSaloon,   //the message
-		NO_ADDITIONAL_INFO);
   }
+
+  Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+	  pMiner->ID(),        //ID of sender
+	  ent_Dan,            //ID of recipient
+	  Msg_ImInTheSaloon,   //the message
+	  NO_ADDITIONAL_INFO);
 }
 
 void QuenchThirst::Execute(Miner* pMiner)
@@ -244,8 +245,9 @@ void QuenchThirst::Execute(Miner* pMiner)
   pMiner->BuyAndDrinkAWhiskey();
 
   cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That's mighty fine sippin' liquer";
-
-  pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());  
+  if (pMiner->Hydrated()) {
+	  pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
+  }
 }
 
 
@@ -262,8 +264,14 @@ void QuenchThirst::Exit(Miner* pMiner)
 
 bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 {
-  //send msg to global message handler
-  return false;
+	switch (msg.Msg) {
+		case Msg_Fight: {
+			pMiner->GetFSM()->ChangeState(FightWithDan::Instance());
+		}
+
+		return true;
+	}
+	return false;
 }
 
 //------------------------------------------------------------------------EatStew
@@ -298,6 +306,80 @@ bool EatStew::OnMessage(Miner* pMiner, const Telegram& msg)
 {
   //send msg to global message handler
   return false;
+}
+
+FightWithDan* FightWithDan::Instance()
+{
+	static FightWithDan instance;
+
+	return &instance;
+}
+
+
+void FightWithDan::Enter(Miner* pMiner)
+{
+	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Gotta teach da' punk it's lesson " << pMiner->getKO() << " HP";
+}
+
+void FightWithDan::Execute(Miner* pMiner)
+{
+	if (pMiner->isKO()) {
+		pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
+		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+			pMiner->ID(),        //ID of sender
+			ent_Dan,            //ID of recipient
+			Msg_BobIsKO,   //the message
+			NO_ADDITIONAL_INFO);
+		return;
+	}
+
+	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Bob is fighting " << pMiner->getKO()<<" HP";
+	if (RandFloat() <= 0.6) {
+		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+			pMiner->ID(),        //ID of sender
+			ent_Dan,            //ID of recipient
+			Msg_BobHitsDanBruise,   //the message
+			NO_ADDITIONAL_INFO);
+		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Hits Dan for 1";
+	}
+	else {
+		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+			pMiner->ID(),        //ID of sender
+			ent_Dan,            //ID of recipient
+			Msg_BobHitsDan,   //the message
+			NO_ADDITIONAL_INFO);
+		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Hits Dan for 2";
+	}
+}
+
+void FightWithDan::Exit(Miner* pMiner)
+{
+	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Dam it was tough";
+}
+
+
+bool FightWithDan::OnMessage(Miner* pMiner, const Telegram& msg)
+{
+	switch (msg.Msg) {
+	case Msg_DanHitsBobBruise:
+		pMiner->DecreaseKOBruise();
+		pMiner->checkKO();
+		return true;
+
+	case Msg_DanHitsBob:
+		pMiner->DecreaseKO();
+		pMiner->checkKO();
+		return true;
+
+	case Msg_DanHitsBobCritical:
+		pMiner->DecreaseKOCritical();
+		pMiner->checkKO();
+		return true;
+	case Msg_DanIsKO:
+		pMiner->GetFSM()->ChangeState(QuenchThirst::Instance());
+		return true;
+	}
+	return false;
 }
 
 

@@ -26,7 +26,7 @@ void Miner::AddToGoldCarried(const int val)
 
 void Miner::AddToWealth(const int val)
 {
-  m_iMoneyInBank += val;
+  m_iMoneyInBank += static_cast<float>(val);
 
   if (m_iMoneyInBank < 0) m_iMoneyInBank = 0;
 }
@@ -46,4 +46,11 @@ bool Miner::Fatigued()const
   }
 
   return false;
+}
+
+bool Miner::Hydrated()const {
+	if (m_iThirst > 0) {
+		return false;
+	}
+	return true;
 }

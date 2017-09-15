@@ -18,12 +18,13 @@
 #include "misc/ConsoleUtils.h"
 #include "DrunkardOwnedStates.h"
 #include "fsm/StateMachine.h"
+#include "misc/Utils.h"
 
 
 //above this value Dan is drunk
 const int DrunknessLevel = 5;
 //above this value Dan passes out
-const int KOThreshold = 0;
+//const int KOThreshold = 0;
 
 
 
@@ -34,22 +35,25 @@ private:
 	//an instance of the state machine class
 	StateMachine<Drunkard>*  m_pStateMachine;
 
+	location_type   m_Location;
 	//the higher the value, the thirstier the miner
 	int                   m_iDrunkness;
 
 	//the higher the value, the more tired the miner
-	int                   m_iKO;
+	//int                   m_iKO;
 
 	bool                  bobInSaloon;
 
 public:
 
-	Drunkard(int id) :m_iDrunkness(0),
-		m_iKO(5),
+	Drunkard(int id) :m_Location(saloon),
+		m_iDrunkness(0),
 		bobInSaloon(false),
 		BaseGameEntity(id)
 
 	{
+		m_iKO = 5;
+
 		//set up state machine
 		m_pStateMachine = new StateMachine<Drunkard>(this);
 
@@ -77,12 +81,12 @@ public:
 	//location_type Location()const { return m_Location; }
 
 	bool          isKO()const;
-	void          DecreaseKO() { m_iKO -= 1; }
+	//void          DecreaseKO() { m_iKO -= 1; if (m_iKO < 0) { m_iKO = 0; } }
 	int			  getKO() { return m_iKO; }
 
 	bool          isDrunk()const;
 	void          DrinkAWhiskey() { m_iDrunkness += 1; }
-	void		  Sleeping() { m_iKO += 1; m_iDrunkness -= 1; }
+	void		  Sleeping() { this->recoverKO(); m_iDrunkness -= 1; }
 
 	bool		  isSleeping();
 	int			  getDrunkness() { return m_iDrunkness; }

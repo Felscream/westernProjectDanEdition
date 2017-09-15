@@ -38,11 +38,11 @@ int main()
   EntityMgr->RegisterEntity(Dan);
 
   //run Bob and Elsa through a few Update calls
-  for (int i=0; i<30; ++i)
+  for (int i=0; i<50; ++i)
   { 
+	Dan->Update();
     Bob->Update();
     Elsa->Update();
-	Dan->Update();
 
     //dispatch any delayed messages
     Dispatch->DispatchDelayedMessages();

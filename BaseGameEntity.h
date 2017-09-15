@@ -13,6 +13,7 @@
 
 #include "messaging/Telegram.h"
 
+const int KOThreshold = 0;
 
 class BaseGameEntity
 {
@@ -21,7 +22,7 @@ private:
 
   //every entity must have a unique identifying number
   int          m_ID;
-
+	
   //this is the next valid ID. Each time a BaseGameEntity is instantiated
   //this value is updated
   static int  m_iNextValidID;
@@ -31,6 +32,10 @@ private:
   //or equal to the next valid ID, before setting the ID and incrementing
   //the next valid ID
   void SetID(int val);
+
+protected:
+
+	int m_iKO;
 
 public:
 
@@ -49,6 +54,44 @@ public:
   virtual bool  HandleMessage(const Telegram& msg)=0;
 
   int           ID()const{return m_ID;}  
+
+  //Decrease HP lightly
+  void DecreaseKOBruise() {
+	  this->m_iKO -= 1;
+  }
+
+  //Decrease HP normally
+  void DecreaseKO() {
+	  this->m_iKO -= 2;
+  }
+
+  //Decrease HP critically
+  void DecreaseKOCritical() {
+	  this->m_iKO -= 4;
+  }
+
+  //Check if entity is down
+  bool isKO() {
+	if (m_iKO > 0) {
+		return false;
+	}
+	return true;
+  }
+
+  void checkKO() {
+	  if (this->m_iKO < 0) {
+		  this->m_iKO = 0;
+	  }
+  }
+
+  //Entity recovers from KO
+  void recoverKO() {
+	  this->m_iKO++;
+  }
+
+  int getKO() {
+	  return this->m_iKO;
+  }
 };
 
 
