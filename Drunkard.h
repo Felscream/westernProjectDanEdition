@@ -71,15 +71,15 @@ public:
 	//-------------------------------------------------------------accessors
 	//location_type Location()const { return m_Location; }
 
-	bool          KOed()const;
+	bool          isKO()const;
 	void          DecreaseKO() { m_iKO -= 1; }
+	int			  getKO() { return m_iKO; }
 
 	bool          isDrunk()const;
 	void          DrinkAWhiskey() { m_iDrunkness += 1; }
-
 	void		  Sleeping() { m_iKO += 1; m_iDrunkness -= 1; }
-	bool		  isSleeping();
 
+	bool		  isSleeping();
 	int			  getDrunkness() { return m_iDrunkness; }
 };
 

@@ -83,7 +83,7 @@ void QuenchThirstDan::Execute(Drunkard* pDrunkard)
 	cout << "\n Drunkard - drinking()";
 
 	if (pDrunkard->isDrunk()) {
-		pDrunkard->GetFSM()->ChangeState(SleepAndSoberUpDan::Instance());
+		pDrunkard->GetFSM()->ChangeState(TellingStories::Instance());
 	}
 }
 
@@ -96,7 +96,50 @@ void QuenchThirstDan::Exit(Drunkard* pDrunkard)
 	cout << "\n" "Drunkard - Exit()";
 }
 
-bool QuenchThirstDan::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
+bool QuenchThirstDan::OnMessage(Drunkard* pDrukard, const Telegram& msg) {
+	return true;
+}
+
+
+FightWithBob* FightWithBob::Instance()
+{
+	static FightWithBob instance;
+
+	return &instance;
+}
+
+void FightWithBob::Enter(Drunkard* pDrunkard)
+{
+	//if the miner is not already located at the goldmine, he must
+	//change location to the gold mine
+	cout << "\n Oh Bob come on, hips; i will kick your a**";
+}
+
+
+void FightWithBob::Execute(Drunkard* pDrunkard)
+{
+	//Now the miner is at the goldmine he digs for gold until he
+	//is carrying in excess of MaxNuggets. If he gets thirsty during
+	//his digging he packs up work for a while and changes state to
+	//gp to the saloon for a whiskey.
+	pDrunkard->DecreaseKO();
+	cout << "\n OH Woa why there are two Bob, hips, i think i drunk too much alcohol...";
+
+	if (pDrunkard->isKO()) {
+		pDrunkard->GetFSM()->ChangeState(SleepAndSoberUpDan::Instance());
+	}
+}
+
+void FightWithBob::Exit(Drunkard* pDrunkard)
+{
+	//Now the miner is at the goldmine he digs for gold until he
+	//is carrying in excess of MaxNuggets. If he gets thirsty during
+	//his digging he packs up work for a while and changes state to
+	//gp to the saloon for a whiskey.
+	cout << "\n" "FightWithBob - Exit()";
+}
+
+bool FightWithBob::OnMessage(Drunkard* pDrukard, const Telegram& msg) {
 	return true;
 }
 
@@ -106,12 +149,18 @@ SleepAndSoberUpDan* SleepAndSoberUpDan::Instance()
 	return &instance;
 }
 
+
+
 void SleepAndSoberUpDan::Enter(Drunkard* pDrunkard)
+
 {
 	//if the miner is not already located at the goldmine, he must
 	//change location to the gold mine
 	cout << "\n Sleep time i guess... THUMP ... ZZZZZZZZZZZZ";
 }
+
+
+
 
 
 void SleepAndSoberUpDan::Execute(Drunkard* pDrunkard)
@@ -121,13 +170,15 @@ void SleepAndSoberUpDan::Execute(Drunkard* pDrunkard)
 	//his digging he packs up work for a while and changes state to
 	//gp to the saloon for a whiskey.
 	pDrunkard->Sleeping();
-	cout << "\n Drunkard - sleeping(), drunkness: "<<pDrunkard->getDrunkness();
+	cout << "\n Drunkard - sleeping(), drunkness: " << pDrunkard->getDrunkness();
 
 	if (!pDrunkard->isSleeping()) {
 		pDrunkard->GetFSM()->ChangeState(QuenchThirstDan::Instance());
 	}
 
 }
+
+
 
 void SleepAndSoberUpDan::Exit(Drunkard* pDrunkard)
 {
@@ -138,10 +189,65 @@ void SleepAndSoberUpDan::Exit(Drunkard* pDrunkard)
 	cout << "\n" "What a great sleep i had!!";
 }
 
+
+
 bool SleepAndSoberUpDan::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
 	return true;
+
+
 }
 
+TellingStories* TellingStories::Instance()
+{
+	static TellingStories instance;
+	return &instance;
+}
+
+
+
+void TellingStories::Enter(Drunkard* pDrunkard)
+
+{
+	//if the miner is not already located at the goldmine, he must
+	//change location to the gold mine
+	cout << "\n Telling stories enter";
+}
+
+
+
+
+
+void TellingStories::Execute(Drunkard* pDrunkard)
+{
+	//Now the miner is at the goldmine he digs for gold until he
+	//is carrying in excess of MaxNuggets. If he gets thirsty during
+	//his digging he packs up work for a while and changes state to
+	//gp to the saloon for a whiskey.
+	pDrunkard->DecreaseKO();
+	cout << "\n Telling stories execute";
+
+	if (pDrunkard->isKO()) {
+		pDrunkard->GetFSM()->ChangeState(SleepAndSoberUpDan::Instance());
+	}
+
+}
+
+
+
+void TellingStories::Exit(Drunkard* pDrunkard)
+{
+	//Now the miner is at the goldmine he digs for gold until he
+	//is carrying in excess of MaxNuggets. If he gets thirsty during
+	//his digging he packs up work for a while and changes state to
+	//gp to the saloon for a whiskey.
+	cout << "\n" "Telling stories exit";
+}
+
+
+
+bool TellingStories::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
+	return true;
+}
 /*EnterMineAndDigForNugget* EnterMineAndDigForNugget::Instance()
 {
 	static EnterMineAndDigForNugget instance;
