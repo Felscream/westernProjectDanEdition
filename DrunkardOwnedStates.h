@@ -26,6 +26,29 @@ struct Telegram;
 //  to VisitBankAndDepositGold. If he gets thirsty he'll change state
 //  to QuenchThirst
 //------------------------------------------------------------------------
+class DrunkardGlobalState : public State<Drunkard> {
+private:
+
+	DrunkardGlobalState() {}
+
+	//copy ctor and assignment should be private
+	DrunkardGlobalState(const DrunkardGlobalState&);
+	DrunkardGlobalState& operator=(const DrunkardGlobalState&);
+
+public:
+
+	//this is a singleton
+	static DrunkardGlobalState* Instance();
+
+	virtual void Enter(Drunkard* Drunkard);
+
+	virtual void Execute(Drunkard* Drunkard);
+
+	virtual void Exit(Drunkard* Drunkard);
+
+	virtual bool OnMessage(Drunkard* agent, const Telegram& msg);
+};
+
 class Creation : public State<Drunkard>
 {
 private:

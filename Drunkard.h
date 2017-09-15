@@ -40,10 +40,13 @@ private:
 	//the higher the value, the more tired the miner
 	int                   m_iKO;
 
+	bool                  bobInSaloon;
+
 public:
 
 	Drunkard(int id) :m_iDrunkness(0),
 		m_iKO(5),
+		bobInSaloon(false),
 		BaseGameEntity(id)
 
 	{
@@ -51,6 +54,8 @@ public:
 		m_pStateMachine = new StateMachine<Drunkard>(this);
 
 		m_pStateMachine->SetCurrentState(Creation::Instance());
+
+		m_pStateMachine->SetGlobalState(DrunkardGlobalState::Instance());
 
 		/* NOTE, A GLOBAL STATE HAS NOT BEEN IMPLEMENTED FOR THE MINER */
 	}
@@ -81,6 +86,9 @@ public:
 
 	bool		  isSleeping();
 	int			  getDrunkness() { return m_iDrunkness; }
+	bool		  bobIsInTheSaloon() { return bobInSaloon; }
+	void		  setBobInSaloon() { bobInSaloon = !bobInSaloon; }
+	bool		  getBobInSaloon() { return bobInSaloon; }
 };
 
 

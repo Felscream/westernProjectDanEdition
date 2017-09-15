@@ -230,6 +230,12 @@ void QuenchThirst::Enter(Miner* pMiner)
     pMiner->ChangeLocation(saloon);
 
     cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Boy, ah sure is thusty! Walking to the saloon";
+
+	Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		pMiner->ID(),        //ID of sender
+		ent_Dan,            //ID of recipient
+		Msg_ImInTheSaloon,   //the message
+		NO_ADDITIONAL_INFO);
   }
 }
 
@@ -246,6 +252,11 @@ void QuenchThirst::Execute(Miner* pMiner)
 void QuenchThirst::Exit(Miner* pMiner)
 { 
   cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
+  Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+	  pMiner->ID(),        //ID of sender
+	  ent_Dan,            //ID of recipient
+	  Msg_ImLeavingTheSaloon,   //the message
+	  NO_ADDITIONAL_INFO);
 }
 
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -14,11 +14,12 @@
     <SccProjectName />
     <SccLocalPath />
     <ProjectGuid>{D84D8F0D-A6A9-4BD8-AFBA-3E7A3B86FD1D}</ProjectGuid>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -102,7 +103,7 @@
       <ObjectFileName>.\Debug\</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>D:\University\8IAR125 -AI\Project 1 - westernProject\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\fcharvin\Downloads\westernProjectDanEdition-master\westernProjectDanEdition-master\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Midl>
       <TypeLibraryName>.\Debug\WestWorldWithMessaging.tlb</TypeLibraryName>
@@ -124,7 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\Time\CrudeTimer.cpp" />
+    <ClCompile Include="Common\Time\CrudeTimer.cpp" />
     <ClCompile Include="BaseGameEntity.cpp" />
     <ClCompile Include="Drunkard.cpp" />
     <ClCompile Include="DrunkardOwnedStates.cpp" />
@@ -137,15 +138,15 @@
     <ClCompile Include="MinersWifeOwnedStates.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Common\2D\SVector2D.h" />
-    <ClInclude Include="..\..\Common\ConsoleUtils.h" />
-    <ClInclude Include="..\Common\FSM\State.h" />
-    <ClInclude Include="..\Common\FSM\StateMachine.h" />
-    <ClInclude Include="..\Common\Messaging\Telegram.h" />
-    <ClInclude Include="..\..\Common\misc\ConsoleUtils.h" />
-    <ClInclude Include="..\..\Common\misc\utils.h" />
-    <ClInclude Include="..\..\Common\Time\CrudeTimer.h" />
-    <ClInclude Include="..\..\Common\utils.h" />
+    <ClInclude Include="Common\2D\SVector2D.h" />
+    <ClInclude Include="Common\ConsoleUtils.h" />
+    <ClInclude Include="Common\FSM\State.h" />
+    <ClInclude Include="Common\FSM\StateMachine.h" />
+    <ClInclude Include="Common\Messaging\Telegram.h" />
+    <ClInclude Include="Common\misc\ConsoleUtils.h" />
+    <ClInclude Include="Common\misc\utils.h" />
+    <ClInclude Include="Common\Time\CrudeTimer.h" />
+    <ClInclude Include="Common\utils.h" />
     <ClInclude Include="BaseGameEntity.h" />
     <ClInclude Include="Drunkard.h" />
     <ClInclude Include="DrunkardOwnedStates.h" />

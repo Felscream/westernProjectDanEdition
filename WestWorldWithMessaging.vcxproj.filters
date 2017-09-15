@@ -42,14 +42,14 @@
     <ClCompile Include="MinersWifeOwnedStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\Time\CrudeTimer.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
     <ClCompile Include="Drunkard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DrunkardOwnedStates.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Time\CrudeTimer.cpp">
+      <Filter>misc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,37 +83,37 @@
     <ClInclude Include="MinersWifeOwnedStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\ConsoleUtils.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Common\misc\ConsoleUtils.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Common\Time\CrudeTimer.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Common\2D\SVector2D.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Common\misc\utils.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Common\utils.h">
-      <Filter>misc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Common\Messaging\Telegram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Common\FSM\StateMachine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Common\FSM\State.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Drunkard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DrunkardOwnedStates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\misc\ConsoleUtils.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ConsoleUtils.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Time\CrudeTimer.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\2D\SVector2D.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\utils.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\misc\utils.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FSM\State.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FSM\StateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Messaging\Telegram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
