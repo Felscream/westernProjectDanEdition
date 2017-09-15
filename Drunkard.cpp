@@ -24,7 +24,7 @@ bool Drunkard::isDrunk()const {
 	return false;
 }
 
-bool Drunkard::KOed()const {
+bool Drunkard::isKO()const {
 	if (m_iKO > KOThreshold)
 		return true;
 	return false;

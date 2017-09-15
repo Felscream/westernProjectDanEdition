@@ -72,6 +72,31 @@ public:
 
 };
 
+
+
+
+class FightWithBob : public State<Drunkard> {
+private:
+
+	FightWithBob() {}
+	FightWithBob(const FightWithBob&);
+	FightWithBob& operator=(const FightWithBob&);
+
+public:
+
+	static FightWithBob* Instance();
+
+	virtual void Enter(Drunkard* Drunkard);
+
+	virtual void Execute(Drunkard* Drunkard);
+
+	virtual void Exit(Drunkard* Drunkard);
+
+	virtual bool OnMessage(Drunkard* agent, const Telegram& msg);
+
+};
+
+
 //------------------------------------------------------------------------
 //
 //  Entity will go to a bank and deposit any nuggets he is carrying. If the 

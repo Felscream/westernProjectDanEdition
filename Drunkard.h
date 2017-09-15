@@ -71,12 +71,13 @@ public:
 	//-------------------------------------------------------------accessors
 	//location_type Location()const { return m_Location; }
 
-	bool          KOed()const;
+	bool          isKO()const;
 	void          DecreaseKO() { m_iKO -= 1; }
 	void          IncreaseKO() { m_iKO += 1; }
 
 	bool          isDrunk()const;
 	void          DrinkAWhiskey() { m_iDrunkness += 1; }
+
 
 };
 
