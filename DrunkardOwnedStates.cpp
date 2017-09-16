@@ -197,9 +197,9 @@ void FightWithBob::Execute(Drunkard* pDrunkard)
 		return;
 	}
 
-	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Dan is fighting " << pDrunkard->getKO() << " HP";
+	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Dan : " << pDrunkard->getKO() << " HP";
 	
-	float hitType = RandFloat();
+	double hitType = RandFloat();
 	if (hitType <= 0.3) {
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
 			pDrunkard->ID(),        //ID of sender
@@ -281,12 +281,16 @@ void SleepAndSoberUpDan::Execute(Drunkard* pDrunkard)
 	//is carrying in excess of MaxNuggets. If he gets thirsty during
 	//his digging he packs up work for a while and changes state to
 	//gp to the saloon for a whiskey.
-	pDrunkard->Sleeping();
-	cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Drunkard - sleeping(), drunkness: " << pDrunkard->getDrunkness();
-
-	if (!pDrunkard->isSleeping()) {
+	if (!pDrunkard->needToRecoverFromKO()) {
 		pDrunkard->GetFSM()->ChangeState(QuenchThirstDan::Instance());
 	}
+	else {
+		pDrunkard->Sleep();
+		cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Drunkard - sleeping(), drunkness: " << pDrunkard->getDrunkness();
+	}
+	
+
+	
 
 }
 
@@ -340,7 +344,7 @@ void TellingStories::Execute(Drunkard* pDrunkard)
 	if (pDrunkard->bobIsInTheSaloon()) {
 		cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": sending a message to bob";
 
-		//let the wife know I'm home
+		//start fight with Bob
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
 			pDrunkard->ID(),        //ID of sender
 			ent_Miner_Bob,            //ID of recipient
@@ -348,8 +352,9 @@ void TellingStories::Execute(Drunkard* pDrunkard)
 			NO_ADDITIONAL_INFO);
 		pDrunkard->GetFSM()->ChangeState(FightWithBob::Instance());
 	}
-
-	pDrunkard->DecreaseKO();
+	else {
+		pDrunkard->DecreaseKOBruise();
+	}
 
 	if (pDrunkard->isKO()) {
 		pDrunkard->GetFSM()->ChangeState(SleepAndSoberUpDan::Instance());
@@ -371,9 +376,5 @@ void TellingStories::Exit(Drunkard* pDrunkard)
 
 
 bool TellingStories::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
-	switch (msg.Msg) {
-	case Msg_ImLeavingTheSaloon:
-		return true;
-	}
 	return false;
 }

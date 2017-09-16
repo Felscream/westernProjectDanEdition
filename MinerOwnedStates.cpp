@@ -168,7 +168,7 @@ void GoHomeAndSleepTilRested::Enter(Miner* pMiner)
 void GoHomeAndSleepTilRested::Execute(Miner* pMiner)
 { 
   //if miner is not fatigued start to dig for nuggets again.
-  if (!pMiner->Fatigued())
+	if (!pMiner->Fatigued() && !pMiner->needToRecoverFromKO())
   {
      cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " 
           << "All mah fatigue has drained away. Time to find more gold!";
@@ -333,7 +333,7 @@ void FightWithDan::Execute(Miner* pMiner)
 		return;
 	}
 
-	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Bob is fighting " << pMiner->getKO()<<" HP";
+	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Bob : " << pMiner->getKO()<<" HP";
 	if (RandFloat() <= 0.6) {
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
 			pMiner->ID(),        //ID of sender

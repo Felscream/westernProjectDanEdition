@@ -23,8 +23,6 @@
 
 //above this value Dan is drunk
 const int DrunknessLevel = 5;
-//above this value Dan passes out
-//const int KOThreshold = 0;
 
 
 
@@ -52,7 +50,8 @@ public:
 		BaseGameEntity(id)
 
 	{
-		m_iKO = 5;
+		MaxHP = 5;
+		m_iKO = MaxHP;
 
 		//set up state machine
 		m_pStateMachine = new StateMachine<Drunkard>(this);
@@ -86,7 +85,9 @@ public:
 
 	bool          isDrunk()const;
 	void          DrinkAWhiskey() { m_iDrunkness += 1; }
-	void		  Sleeping() { this->recoverKO(); m_iDrunkness -= 1; }
+	void		  Sleep() { 
+		this->recoverKO();
+		m_iDrunkness -= 1; }
 
 	bool		  isSleeping();
 	int			  getDrunkness() { return m_iDrunkness; }

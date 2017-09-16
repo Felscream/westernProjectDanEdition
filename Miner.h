@@ -62,10 +62,12 @@ public:
                           m_iThirst(0),
                           m_iFatigue(0),
                           BaseGameEntity(id)
-                               
+						  
+                         
   {
-	 m_iKO = 5;
-
+	 MaxHP = 5;
+	 m_iKO = MaxHP;
+	
     //set up state machine
     m_pStateMachine = new StateMachine<Miner>(this);
     
@@ -97,7 +99,13 @@ public:
   bool          PocketsFull()const{return m_iGoldCarried >= MaxNuggets;}
 
   bool          Fatigued()const;
-  void          DecreaseFatigue() { m_iFatigue -= 1; if (m_iFatigue < 0) { m_iFatigue = 0; } }
+  void          DecreaseFatigue() { 
+	  m_iFatigue -= 1; 
+	  if (m_iFatigue < 0) { 
+		  m_iFatigue = 0; 
+	  } 
+	  recoverKO();
+  }
   void          IncreaseFatigue(){m_iFatigue += 1;}
 
   float           Wealth()const{return m_iMoneyInBank;}

@@ -13,6 +13,7 @@
 
 #include "messaging/Telegram.h"
 
+//At this value, game entities pass out
 const int KOThreshold = 0;
 
 class BaseGameEntity
@@ -36,6 +37,7 @@ private:
 protected:
 
 	int m_iKO;
+	int MaxHP;
 
 public:
 
@@ -78,6 +80,13 @@ public:
 	return true;
   }
 
+  bool needToRecoverFromKO() {
+	  if (m_iKO < this->MaxHP) {
+		  return true;
+	  }
+	  return false;
+  }
+
   void checkKO() {
 	  if (this->m_iKO < 0) {
 		  this->m_iKO = 0;
@@ -87,6 +96,9 @@ public:
   //Entity recovers from KO
   void recoverKO() {
 	  this->m_iKO++;
+	  if (m_iKO > this->MaxHP) {
+		  m_iKO = MaxHP;
+	  }
   }
 
   int getKO() {
