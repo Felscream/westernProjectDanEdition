@@ -1,16 +1,3 @@
-﻿  MinerOwnedStates.cpp
-  DrunkardOwnedStates.cpp
-  Generating Code...
-  Compiling...
-  main.cpp
-  MinersWifeOwnedStates.cpp
-  MinersWife.cpp
-  Miner.cpp
-  Drunkard.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  MessageDispatcher.cpp
-  EntityManager.cpp
-  BaseGameEntity.cpp
-  WestWorldWithMessaging.vcxproj -> D:\University\8IAR125 -AI\Project 1 - westernProject\westernProjectDanEdition\.\Debug\WestWorldWithMessaging.exe
+﻿  DrunkardOwnedStates.cpp
+  WestWorldWithMessaging.vcxproj -> C:\Users\Felix\Documents\Projet_IAJV\westernProjectDanEdition\.\Debug\WestWorldWithMessaging.exe
   WestWorldWithMessaging.vcxproj -> .\Debug\WestWorldWithMessaging.pdb (Full PDB)

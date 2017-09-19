@@ -47,7 +47,7 @@ int main()
     //dispatch any delayed messages
     Dispatch->DispatchDelayedMessages();
 
-    Sleep(800);
+    Sleep(100);
   }
 
   //tidy up

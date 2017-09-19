@@ -192,7 +192,6 @@ void GoHomeAndSleepTilRested::Exit(Miner* pMiner)
 
 bool GoHomeAndSleepTilRested::OnMessage(Miner* pMiner, const Telegram& msg)
 {
-   SetTextColor(BACKGROUND_RED|FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
 
    switch(msg.Msg)
    {
@@ -253,12 +252,13 @@ void QuenchThirst::Execute(Miner* pMiner)
 
 void QuenchThirst::Exit(Miner* pMiner)
 { 
-  cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
-  Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-	  pMiner->ID(),        //ID of sender
-	  ent_Dan,            //ID of recipient
-	  Msg_ImLeavingTheSaloon,   //the message
-	  NO_ADDITIONAL_INFO);
+	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
+	Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		pMiner->ID(),        //ID of sender
+		ent_Dan,            //ID of recipient
+		Msg_ImLeavingTheSaloon,   //the message
+		NO_ADDITIONAL_INFO);
 }
 
 
@@ -318,11 +318,14 @@ FightWithDan* FightWithDan::Instance()
 
 void FightWithDan::Enter(Miner* pMiner)
 {
-	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Gotta teach da' punk it's lesson " << pMiner->getKO() << " HP";
+	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": Gotta teach da' punk it's lesson!";
+	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": Fighting -> " << pMiner->getKO() << " HP";
 }
 
 void FightWithDan::Execute(Miner* pMiner)
 {
+	
 	if (pMiner->isKO()) {
 		pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
@@ -333,13 +336,14 @@ void FightWithDan::Execute(Miner* pMiner)
 		return;
 	}
 
-	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Bob : " << pMiner->getKO()<<" HP";
+	//cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Bob : " << pMiner->getKO()<<" HP";
 	if (RandFloat() <= 0.6) {
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
 			pMiner->ID(),        //ID of sender
 			ent_Dan,            //ID of recipient
 			Msg_BobHitsDanBruise,   //the message
 			NO_ADDITIONAL_INFO);
+		SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
 		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Hits Dan for 1";
 	}
 	else {
@@ -348,12 +352,14 @@ void FightWithDan::Execute(Miner* pMiner)
 			ent_Dan,            //ID of recipient
 			Msg_BobHitsDan,   //the message
 			NO_ADDITIONAL_INFO);
+		SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
 		cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Hits Dan for 2";
 	}
 }
 
 void FightWithDan::Exit(Miner* pMiner)
 {
+	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
 	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Dam it was tough";
 }
 
