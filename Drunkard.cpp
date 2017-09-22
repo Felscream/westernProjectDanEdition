@@ -1,6 +1,8 @@
 #include "Drunkard.h"
 #include <iostream>
 
+
+
 bool Drunkard::HandleMessage(const Telegram& msg)
 {
 	return m_pStateMachine->HandleMessage(msg);
@@ -9,9 +11,11 @@ bool Drunkard::HandleMessage(const Telegram& msg)
 
 void Drunkard::Update()
 {
-	SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
-	m_pStateMachine->Update();
+	for (int i = 0; i < 5; i++) {
+		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		m_pStateMachine->Update();
+	}
+	
 }
 
 bool Drunkard::isDrunk()const {
@@ -32,3 +36,4 @@ bool Drunkard::isSleeping() {
 		return false;
 	return true;
 }
+

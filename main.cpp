@@ -1,6 +1,6 @@
 #include <fstream>
 #include <time.h>
-
+#include <thread>
 #include "Locations.h"
 #include "Miner.h"
 #include "MinersWife.h"
@@ -9,6 +9,8 @@
 #include "MessageDispatcher.h"
 #include "misc/ConsoleUtils.h"
 #include "EntityNames.h"
+#include <mutex>
+using namespace std;
 
 
 std::ofstream os;
@@ -38,17 +40,20 @@ int main()
   EntityMgr->RegisterEntity(Dan);
 
   //run Bob and Elsa through a few Update calls
-  for (int i=0; i<50; ++i)
-  { 
-	Dan->Update();
-    Bob->Update();
-    Elsa->Update();
+  
+	std::thread danThread(&Drunkard::Update, Dan);
+	std::thread bobThread(&Miner::Update, Bob);
+	std::thread elsaThread(&MinersWife::Update, Elsa);
+	
+	danThread.join();
+	bobThread.join();
+	elsaThread.join();
+	//dispatch any delayed messages
+	Dispatch->DispatchDelayedMessages();
 
-    //dispatch any delayed messages
-    Dispatch->DispatchDelayedMessages();
-
-    Sleep(100);
-  }
+  
+  
+  
 
   //tidy up
   delete Bob;

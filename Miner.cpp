@@ -8,11 +8,12 @@ bool Miner::HandleMessage(const Telegram& msg)
 
 void Miner::Update()
 {
-  SetTextColor(FOREGROUND_RED| FOREGROUND_INTENSITY);
+	for (int i = 0; i < 5; i++) {
+		SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		m_iThirst += 1;
+		m_pStateMachine->Update();
+	}
 
-  m_iThirst += 1;
-  
-  m_pStateMachine->Update();
 }
 
 

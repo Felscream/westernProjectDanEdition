@@ -10,6 +10,9 @@
 //
 //------------------------------------------------------------------------
 #include <string>
+#include <iostream>
+#include <thread>
+using namespace std;
 
 #include "messaging/Telegram.h"
 
@@ -98,7 +101,13 @@ public:
   int getKO() {
 	  return this->m_iKO;
   }
+
+  void printThreadId() {
+	  auto th_id = this_thread::get_id();
+	  cout << th_id << endl;
+  }
 };
+
 
 
 
