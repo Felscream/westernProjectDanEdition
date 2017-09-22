@@ -33,6 +33,7 @@ void EnterMineAndDigForNugget::Enter(Miner* pMiner)
 {
   //if the miner is not already located at the goldmine, he must
   //change location to the gold mine
+  SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
   if (pMiner->Location() != goldmine)
   {
     cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Walkin' to the goldmine";

@@ -361,17 +361,10 @@ void TellingStories::Execute(Drunkard* pDrunkard)
 	}
 	else {
 		pDrunkard->DecreaseKOBruise();
-		double randJoke = RandFloat();
+		int randJoke = rand()%5;
+		
 		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		if (randJoke <= 0.33) {
-			cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": I'm not an alcoholic. Alcoholics need a drink, but I already have one.";
-		}
-		else if (randJoke > 0.33 && randJoke < 0.66) {
-			cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Alcohol is my worst enemy, but the bible says to love your enemy";
-		}
-		else {
-			cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": I'm not alcoholic, I only drink twice a year. When it's my birthday, and when it's not my birthday.";
-		}
+		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << pDrunkard->getJoke(randJoke);
 	}
 
 	if (pDrunkard->isKO()) {
