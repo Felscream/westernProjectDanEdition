@@ -33,7 +33,7 @@ void EnterMineAndDigForNugget::Enter(Miner* pMiner)
 {
   //if the miner is not already located at the goldmine, he must
   //change location to the gold mine
-  SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
   if (pMiner->Location() != goldmine)
   {
     cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Walkin' to the goldmine";
@@ -246,6 +246,7 @@ void QuenchThirst::Execute(Miner* pMiner)
 
   cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "That's mighty fine sippin' liquer";
   if (pMiner->Hydrated()) {
+	  cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
 	  pMiner->GetFSM()->ChangeState(EnterMineAndDigForNugget::Instance());
   }
 }
@@ -254,7 +255,6 @@ void QuenchThirst::Execute(Miner* pMiner)
 void QuenchThirst::Exit(Miner* pMiner)
 { 
 	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
-	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Leaving the saloon, feelin' good";
 	Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
 		pMiner->ID(),        //ID of sender
 		ent_Dan,            //ID of recipient
@@ -369,17 +369,17 @@ bool FightWithDan::OnMessage(Miner* pMiner, const Telegram& msg)
 {
 	switch (msg.Msg) {
 	case Msg_DanHitsBobBruise:
-		pMiner->DecreaseKOBruise();
+		pMiner->DecreaseKO(pMiner->bruise);
 		pMiner->checkKO();
 		return true;
 
 	case Msg_DanHitsBob:
-		pMiner->DecreaseKO();
+		pMiner->DecreaseKO(pMiner->hit);
 		pMiner->checkKO();
 		return true;
 
 	case Msg_DanHitsBobCritical:
-		pMiner->DecreaseKOCritical();
+		pMiner->DecreaseKO(pMiner->critical);
 		pMiner->checkKO();
 		return true;
 	case Msg_DanIsKO:

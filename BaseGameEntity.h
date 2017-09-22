@@ -23,6 +23,8 @@ private:
 
   //every entity must have a unique identifying number
   int          m_ID;
+
+  
 	
   //this is the next valid ID. Each time a BaseGameEntity is instantiated
   //this value is updated
@@ -38,6 +40,7 @@ protected:
 
 	int m_iKO;
 	int MaxHP;
+	//enum damageType :int { bruise = 1, hit = 2, critical = 4 };
 
 public:
 
@@ -45,7 +48,7 @@ public:
   {
     SetID(id);
   }
-
+  enum damageType :int { bruise = 1, hit = 2, critical = 4 };
   virtual ~BaseGameEntity(){}
 
   //all entities must implement an update function
@@ -58,18 +61,9 @@ public:
   int           ID()const{return m_ID;}  
 
   //Decrease HP lightly
-  void DecreaseKOBruise() {
-	  this->m_iKO -= 1;
-  }
 
-  //Decrease HP normally
-  void DecreaseKO() {
-	  this->m_iKO -= 2;
-  }
-
-  //Decrease HP critically
-  void DecreaseKOCritical() {
-	  this->m_iKO -= 4;
+  void DecreaseKO(damageType damage) {
+	  this->m_iKO -= damage;
   }
 
   //Check if entity is down

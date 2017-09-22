@@ -237,20 +237,20 @@ void FightWithBob::Exit(Drunkard* pDrunkard)
 	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": FightWithBob - Exit()";
 }
 
-bool FightWithBob::OnMessage(Drunkard* pDrukard, const Telegram& msg) {
+bool FightWithBob::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
 	switch (msg.Msg) {
 		case Msg_BobHitsDanBruise:
-			pDrukard->DecreaseKOBruise();
-			pDrukard->checkKO();
+			pDrunkard->DecreaseKO(pDrunkard->bruise);
+			pDrunkard->checkKO();
 			return true;
 
 		case Msg_BobHitsDan:
-			pDrukard->DecreaseKO();
-			pDrukard->checkKO();
+			pDrunkard->DecreaseKO(pDrunkard->hit);
+			pDrunkard->checkKO();
 			return true;
 
 		case Msg_BobIsKO:
-			pDrukard->GetFSM()->RevertToPreviousState();
+			pDrunkard->GetFSM()->RevertToPreviousState();
 			return true;
 	}
 	return false;
@@ -360,9 +360,9 @@ void TellingStories::Execute(Drunkard* pDrunkard)
 
 	}
 	else {
-		pDrunkard->DecreaseKOBruise();
-		int randJoke = rand()%5;
-		
+		pDrunkard->DecreaseKO(pDrunkard->bruise);
+		int randJoke = rand() % 5;
+
 		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << pDrunkard->getJoke(randJoke);
 	}
