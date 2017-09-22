@@ -12,12 +12,16 @@
 #include <string>
 #include <iostream>
 #include <thread>
+#include <mutex>
+#include "misc/ConsoleUtils.h"
 using namespace std;
 
 #include "messaging/Telegram.h"
 
 //At this value, game entities pass out
 const int KOThreshold = 0;
+
+static std::mutex mu;
 
 class BaseGameEntity
 {
@@ -105,6 +109,12 @@ public:
   void printThreadId() {
 	  auto th_id = this_thread::get_id();
 	  cout << th_id << endl;
+  }
+
+  void sharedPrint(string writer, string mes, WORD colors) {
+	  std::lock_guard<std::mutex> guard(mu);
+	  SetTextColor(colors);
+	  cout << "\n" << writer << " : " << mes << endl;
   }
 };
 

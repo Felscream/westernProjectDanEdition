@@ -135,7 +135,9 @@ void QuenchThirstDan::Enter(Drunkard* pDrunkard)
 {
 	//if the miner is not already located at the goldmine, he must
 	//change location to the gold mine
-	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Time to drink som' good ol' whiskey";
+
+	//cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Time to drink som' good ol' whiskey";
+	pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Time to drink som' good ol' whiskey", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 }
 
 
@@ -146,7 +148,7 @@ void QuenchThirstDan::Execute(Drunkard* pDrunkard)
 	//his digging he packs up work for a while and changes state to
 	//gp to the saloon for a whiskey.
 	pDrunkard->DrinkAWhiskey();
-	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Drinking...";
+	pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) " Drinking...", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
 	if (pDrunkard->isDrunk()) {
 		pDrunkard->GetFSM()->ChangeState(TellingStories::Instance());
@@ -176,8 +178,7 @@ FightWithBob* FightWithBob::Instance()
 
 void FightWithBob::Enter(Drunkard* pDrunkard)
 {
-	SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Fighting -> " << pDrunkard->getKO() << " HP";
+	pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) " Fighting -> " + to_string(pDrunkard->getKO()) + " HP", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 }
 
 
