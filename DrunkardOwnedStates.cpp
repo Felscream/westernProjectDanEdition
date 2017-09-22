@@ -148,7 +148,7 @@ void QuenchThirstDan::Execute(Drunkard* pDrunkard)
 	//his digging he packs up work for a while and changes state to
 	//gp to the saloon for a whiskey.
 	pDrunkard->DrinkAWhiskey();
-	pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) " Drinking...", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Drinking...", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
 	if (pDrunkard->isDrunk()) {
 		pDrunkard->GetFSM()->ChangeState(TellingStories::Instance());
@@ -178,7 +178,7 @@ FightWithBob* FightWithBob::Instance()
 
 void FightWithBob::Enter(Drunkard* pDrunkard)
 {
-	pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) " Fighting -> " + to_string(pDrunkard->getKO()) + " HP", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Fighting -> " + to_string(pDrunkard->getKO()) + " HP", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 }
 
 
@@ -186,7 +186,8 @@ void FightWithBob::Execute(Drunkard* pDrunkard)
 {
 	
 	if (pDrunkard->isKO()) {
-		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Dam' he got me";
+		
+		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Dam' he got me", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
 			pDrunkard->ID(),        //ID of sender
 			ent_Miner_Bob,            //ID of recipient
@@ -205,8 +206,7 @@ void FightWithBob::Execute(Drunkard* pDrunkard)
 			ent_Miner_Bob,            //ID of recipient
 			Msg_DanHitsBobBruise,   //the message
 			NO_ADDITIONAL_INFO);
-		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Hits Bob for 1";
+		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Hits Bob for 1", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 	else if(hitType > 0.3 && hitType < 0.8){
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
@@ -214,8 +214,7 @@ void FightWithBob::Execute(Drunkard* pDrunkard)
 			ent_Miner_Bob,            //ID of recipient
 			Msg_DanHitsBob,   //the message
 			NO_ADDITIONAL_INFO);
-		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Hits Bob for 2";
+		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Hits Bob for 2", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 	else {
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
@@ -223,8 +222,7 @@ void FightWithBob::Execute(Drunkard* pDrunkard)
 			ent_Miner_Bob,            //ID of recipient
 			Msg_DanHitsBobCritical,   //the message
 			NO_ADDITIONAL_INFO);
-		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Hits Dan for 4";
+		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Hits Bob for 4", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 
 }
@@ -270,8 +268,7 @@ void SleepAndSoberUpDan::Enter(Drunkard* pDrunkard)
 {
 	//if the miner is not already located at the goldmine, he must
 	//change location to the gold mine
-	SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Sleep time i guess... THUMP ... ZZZZZZZZZZZZ";
+	pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Sleep time i guess... THUMP ... ZZZZZZZZZZZZ", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 }
 
 
@@ -289,7 +286,7 @@ void SleepAndSoberUpDan::Execute(Drunkard* pDrunkard)
 	}
 	else {
 		pDrunkard->Sleep();
-		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Sleeping... -> drunkness : " << pDrunkard->getDrunkness();
+		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Sleeping... -> drunkness : " + to_string(pDrunkard->getDrunkness()), FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 	
 
@@ -305,7 +302,8 @@ void SleepAndSoberUpDan::Exit(Drunkard* pDrunkard)
 	//is carrying in excess of MaxNuggets. If he gets thirsty during
 	//his digging he packs up work for a while and changes state to
 	//gp to the saloon for a whiskey.
-	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": What a great sleep i had!!";
+	pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) " What a great sleep i had!!", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
 }
 
 
@@ -346,8 +344,7 @@ void TellingStories::Execute(Drunkard* pDrunkard)
 	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Telling stories execute";
 	if (pDrunkard->bobIsInTheSaloon()) {
 		//cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": sending a message to bob";
-		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Oh Bob come on, hips; i will kick your a** ";
+		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Oh Bob come on, hips; i will kick your a**", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		//start fight with Bob
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
 			pDrunkard->ID(),        //ID of sender
@@ -364,8 +361,7 @@ void TellingStories::Execute(Drunkard* pDrunkard)
 		pDrunkard->DecreaseKO(pDrunkard->bruise);
 		int randJoke = rand() % 5;
 
-		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << pDrunkard->getJoke(randJoke);
+		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), pDrunkard->getJoke(randJoke), FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 
 	if (pDrunkard->isKO()) {
