@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "MinersWifeOwnedStates.h"
 #include "MinerOwnedStates.h"
 #include "MinersWife.h"
@@ -216,4 +217,5 @@ bool CookStew::OnMessage(MinersWife* wife, const Telegram& msg)
   }//end switch
 
   return false;
+
 }
