@@ -8,7 +8,7 @@ bool MinersWife::HandleMessage(const Telegram& msg)
 
 void MinersWife::Update()
 {
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 10; i++) {
 		m_pStateMachine->Update();
 	}
 
