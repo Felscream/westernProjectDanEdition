@@ -47,14 +47,14 @@ void DrunkardGlobalState::Exit(Drunkard* pDrunkard)
 
 bool DrunkardGlobalState::OnMessage(Drunkard* drunkard, const Telegram& msg)
 {
-	SetTextColor(BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	
 	switch (msg.Msg)
 	{
 		case Msg_ImInTheSaloon:
 		{
 			//cout << "\nMessage handled by " << GetNameOfEntity(drunkard->ID()) << " at time: " << Clock->GetCurrentTime();
 
-			SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			
 
 			//cout << "\n" << GetNameOfEntity(drunkard->ID()) << ": Bob is in the saloon";
 
@@ -68,7 +68,7 @@ bool DrunkardGlobalState::OnMessage(Drunkard* drunkard, const Telegram& msg)
 		{
 			//cout << "\nMessage handled by " << GetNameOfEntity(drunkard->ID()) << " at time: "<< Clock->GetCurrentTime();
 
-			SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+			
 
 			//cout << "\n" << GetNameOfEntity(drunkard->ID()) << ": Bob is leaving";
 
@@ -188,11 +188,12 @@ void FightWithBob::Execute(Drunkard* pDrunkard)
 	if (pDrunkard->isKO()) {
 		
 		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Dam' he got me", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-			pDrunkard->ID(),        //ID of sender
-			ent_Miner_Bob,            //ID of recipient
-			Msg_DanIsKO,   //the message
-			NO_ADDITIONAL_INFO);
+		pDrunkard->sharedPrintTelegram(pDrunkard->ID(), ent_Miner_Bob, Msg_DanIsKO);
+		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		//	pDrunkard->ID(),        //ID of sender
+		//	ent_Miner_Bob,            //ID of recipient
+		//	Msg_DanIsKO,   //the message
+		//	NO_ADDITIONAL_INFO);
 		pDrunkard->GetFSM()->ChangeState(SleepAndSoberUpDan::Instance());
 		return;
 	}
@@ -201,27 +202,30 @@ void FightWithBob::Execute(Drunkard* pDrunkard)
 	
 	double hitType = RandFloat();
 	if (hitType <= 0.3) {
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-			pDrunkard->ID(),        //ID of sender
-			ent_Miner_Bob,            //ID of recipient
-			Msg_DanHitsBobBruise,   //the message
-			NO_ADDITIONAL_INFO);
+		pDrunkard->sharedPrintTelegram(pDrunkard->ID(), ent_Miner_Bob, Msg_DanHitsBobBruise);
+		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		//	pDrunkard->ID(),        //ID of sender
+		//	ent_Miner_Bob,            //ID of recipient
+		//	Msg_DanHitsBobBruise,   //the message
+		//	NO_ADDITIONAL_INFO);
 		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Hits Bob for 1", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 	else if(hitType > 0.3 && hitType < 0.8){
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-			pDrunkard->ID(),        //ID of sender
-			ent_Miner_Bob,            //ID of recipient
-			Msg_DanHitsBob,   //the message
-			NO_ADDITIONAL_INFO);
+		pDrunkard->sharedPrintTelegram(pDrunkard->ID(), ent_Miner_Bob, Msg_DanHitsBob);
+		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		//	pDrunkard->ID(),        //ID of sender
+		//	ent_Miner_Bob,            //ID of recipient
+		//	Msg_DanHitsBob,   //the message
+		//	NO_ADDITIONAL_INFO);
 		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Hits Bob for 2", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 	else {
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-			pDrunkard->ID(),        //ID of sender
-			ent_Miner_Bob,            //ID of recipient
-			Msg_DanHitsBobCritical,   //the message
-			NO_ADDITIONAL_INFO);
+		pDrunkard->sharedPrintTelegram(pDrunkard->ID(), ent_Miner_Bob, Msg_DanHitsBobCritical);
+		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		//	pDrunkard->ID(),        //ID of sender
+		//	ent_Miner_Bob,            //ID of recipient
+		//	Msg_DanHitsBobCritical,   //the message
+		//	NO_ADDITIONAL_INFO);
 		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Hits Bob for 4", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	}
 
@@ -340,17 +344,18 @@ void TellingStories::Execute(Drunkard* pDrunkard)
 	//is carrying in excess of MaxNuggets. If he gets thirsty during
 	//his digging he packs up work for a while and changes state to
 	//gp to the saloon for a whiskey.
-	SetTextColor(BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	
 	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Telling stories execute";
 	if (pDrunkard->bobIsInTheSaloon()) {
 		//cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": sending a message to bob";
 		pDrunkard->sharedPrint(GetNameOfEntity(pDrunkard->ID()), (string) "Oh Bob come on, hips; i will kick your a**", FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 		//start fight with Bob
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-			pDrunkard->ID(),        //ID of sender
-			ent_Miner_Bob,            //ID of recipient
-			Msg_Fight,   //the message
-			NO_ADDITIONAL_INFO);
+		pDrunkard->sharedPrintTelegram(pDrunkard->ID(), ent_Miner_Bob, Msg_Fight);
+		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		//	pDrunkard->ID(),        //ID of sender
+		//	ent_Miner_Bob,            //ID of recipient
+		//	Msg_Fight,   //the message
+		//	NO_ADDITIONAL_INFO);
 		
 		pDrunkard->GetFSM()->ChangeState(FightWithBob::Instance());
 

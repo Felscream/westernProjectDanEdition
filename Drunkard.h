@@ -55,11 +55,11 @@ public:
 		MaxHP = 5;
 		m_iKO = MaxHP;
 
-		jokes[0] = ": I'm not an alcoholic. Alcoholics need a drink, but I already have one.";
-		jokes[1] = ": Alcohol is my worst enemy, but the bible says to love your enemy";
-		jokes[2] = ": I'm not alcoholic, I only drink twice a year. When it's my birthday, and when it's not my birthday.";
-		jokes[3] = ": My doctor told me to watch my drinking, so now I drink in front of a mirror.";
-		jokes[4] = ": A man's got to believe in something. I believe I'll have another drink.";
+		jokes[0] = "I'm not an alcoholic. Alcoholics need a drink, but I already have one.";
+		jokes[1] = "Alcohol is my worst enemy, but the bible says to love your enemy";
+		jokes[2] = "I'm not alcoholic, I only drink twice a year. When it's my birthday, and when it's not my birthday.";
+		jokes[3] = "My doctor told me to watch my drinking, so now I drink in front of a mirror.";
+		jokes[4] = "A man's got to believe in something. I believe I'll have another drink.";
 
 		//set up state machine
 		m_pStateMachine = new StateMachine<Drunkard>(this);

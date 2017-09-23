@@ -39,14 +39,19 @@ int main()
   EntityMgr->RegisterEntity(Dan);
 
   //run Bob and Elsa through a few Update calls
-  
-	std::thread danThread(&Drunkard::Update, Dan);
-	std::thread bobThread(&Miner::Update, Bob);
-	std::thread elsaThread(&MinersWife::Update, Elsa);
+
+	thread danThread(&Drunkard::Update, Dan);
+	thread bobThread(&Miner::Update, Bob);
+	thread elsaThread(&MinersWife::Update, Elsa);
 	
 	danThread.join();
+	cout << "\nDan a finit";
 	bobThread.join();
+	cout << "\nBob a finit";
 	elsaThread.join();
+	cout << "\nElsa a finit";
+
+
 	//dispatch any delayed messages
 	Dispatch->DispatchDelayedMessages();
 

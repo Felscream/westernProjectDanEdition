@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WestWorldWithMessaging", "WestWorldWithMessaging.vcxproj", "{D84D8F0D-A6A9-4BD8-AFBA-3E7A3B86FD1D}"
 EndProject
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {662DB3FC-2594-4398-8CAF-36A878F8A018}
+		SolutionGuid = {8D09A426-3307-413E-8C32-E9864AEF2C77}
 	EndGlobalSection
 EndGlobal

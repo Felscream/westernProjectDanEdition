@@ -11,8 +11,7 @@ bool Drunkard::HandleMessage(const Telegram& msg)
 
 void Drunkard::Update()
 {
-	for (int i = 0; i < 5; i++) {
-		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+	for (int i = 0; i < 10; i++) {
 		m_pStateMachine->Update();
 	}
 	

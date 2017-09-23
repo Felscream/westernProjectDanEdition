@@ -33,7 +33,6 @@ void EnterMineAndDigForNugget::Enter(Miner* pMiner)
 {
   //if the miner is not already located at the goldmine, he must
   //change location to the gold mine
-	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
   if (pMiner->Location() != goldmine)
   {
 	pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Walkin' to the goldmine", FOREGROUND_RED | FOREGROUND_INTENSITY);
@@ -152,11 +151,12 @@ void GoHomeAndSleepTilRested::Enter(Miner* pMiner)
     pMiner->ChangeLocation(shack); 
 
     //let the wife know I'm home
-    Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-                              pMiner->ID(),        //ID of sender
-                              ent_Elsa,            //ID of recipient
-                              Msg_HiHoneyImHome,   //the message
-                              NO_ADDITIONAL_INFO);    
+	pMiner->sharedPrintTelegram(pMiner->ID(), ent_Elsa, Msg_HiHoneyImHome);
+    //Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+    //                          pMiner->ID(),        //ID of sender
+    //                          ent_Elsa,            //ID of recipient
+    //                          Msg_HiHoneyImHome,   //the message
+    //                          NO_ADDITIONAL_INFO);    
   }
 }
 
@@ -194,10 +194,9 @@ bool GoHomeAndSleepTilRested::OnMessage(Miner* pMiner, const Telegram& msg)
      cout << "\nMessage handled by " << GetNameOfEntity(pMiner->ID()) 
      << " at time: " << Clock->GetCurrentTime();
 
-     SetTextColor(FOREGROUND_RED|FOREGROUND_INTENSITY);
-
-     cout << "\n" << GetNameOfEntity(pMiner->ID()) 
-          << ": Okay Hun, ahm a comin'!";
+     
+	 pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Okay Hun, ahm a comin'!", FOREGROUND_RED | FOREGROUND_INTENSITY);
+   
 
      pMiner->GetFSM()->ChangeState(EatStew::Instance());
       
@@ -224,12 +223,12 @@ void QuenchThirst::Enter(Miner* pMiner)
     pMiner->ChangeLocation(saloon);
 	pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Boy, ah sure is thusty! Walking to the saloon", FOREGROUND_RED | FOREGROUND_INTENSITY);
   }
-
-  Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-	  pMiner->ID(),        //ID of sender
-	  ent_Dan,            //ID of recipient
-	  Msg_ImInTheSaloon,   //the message
-	  NO_ADDITIONAL_INFO);
+  pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_ImInTheSaloon);
+  //Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+	 // pMiner->ID(),        //ID of sender
+	 // ent_Dan,            //ID of recipient
+	 // Msg_ImInTheSaloon,   //the message
+	 // NO_ADDITIONAL_INFO);
 }
 
 void QuenchThirst::Execute(Miner* pMiner)
@@ -245,12 +244,12 @@ void QuenchThirst::Execute(Miner* pMiner)
 
 void QuenchThirst::Exit(Miner* pMiner)
 { 
-	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
-	Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-		pMiner->ID(),        //ID of sender
-		ent_Dan,            //ID of recipient
-		Msg_ImLeavingTheSaloon,   //the message
-		NO_ADDITIONAL_INFO);
+	pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_ImLeavingTheSaloon);
+	//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+	//	pMiner->ID(),        //ID of sender
+	//	ent_Dan,            //ID of recipient
+	//	Msg_ImLeavingTheSaloon,   //the message
+	//	NO_ADDITIONAL_INFO);
 }
 
 
@@ -310,7 +309,6 @@ FightWithDan* FightWithDan::Instance()
 
 void FightWithDan::Enter(Miner* pMiner)
 {
-	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
 	pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Gotta teach da' punk it's lesson!", FOREGROUND_RED | FOREGROUND_INTENSITY);
 	pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Fighting -> "+to_string(pMiner->getKO())+" HP", FOREGROUND_RED | FOREGROUND_INTENSITY);
 
@@ -321,38 +319,40 @@ void FightWithDan::Execute(Miner* pMiner)
 	
 	if (pMiner->isKO()) {
 		pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-			pMiner->ID(),        //ID of sender
-			ent_Dan,            //ID of recipient
-			Msg_BobIsKO,   //the message
-			NO_ADDITIONAL_INFO);
+		pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_BobIsKO);
+		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		//	pMiner->ID(),        //ID of sender
+		//	ent_Dan,            //ID of recipient
+		//	Msg_BobIsKO,   //the message
+		//	NO_ADDITIONAL_INFO);
 		return;
 	}
 
 	//cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Bob : " << pMiner->getKO()<<" HP";
 	if (RandFloat() <= 0.6) {
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-			pMiner->ID(),        //ID of sender
-			ent_Dan,            //ID of recipient
-			Msg_BobHitsDanBruise,   //the message
-			NO_ADDITIONAL_INFO);
-		SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_BobHitsDanBruise);
+		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		//	pMiner->ID(),        //ID of sender
+		//	ent_Dan,            //ID of recipient
+		//	Msg_BobHitsDanBruise,   //the message
+		//	NO_ADDITIONAL_INFO);
+
 		pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Hits Dan for 1", FOREGROUND_RED | FOREGROUND_INTENSITY);
 	}
 	else {
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-			pMiner->ID(),        //ID of sender
-			ent_Dan,            //ID of recipient
-			Msg_BobHitsDan,   //the message
-			NO_ADDITIONAL_INFO);
-		SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
+		pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_BobHitsDan);
+		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		//	pMiner->ID(),        //ID of sender
+		//	ent_Dan,            //ID of recipient
+		//	Msg_BobHitsDan,   //the message
+		//	NO_ADDITIONAL_INFO);
+
 		pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Hits Dan for 2", FOREGROUND_RED | FOREGROUND_INTENSITY);
 	}
 }
 
 void FightWithDan::Exit(Miner* pMiner)
 {
-	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
 	pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Dam it was tough", FOREGROUND_RED | FOREGROUND_INTENSITY);
 }
 

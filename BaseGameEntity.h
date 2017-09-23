@@ -13,7 +13,11 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
+#include <shared_mutex>
+
 #include "misc/ConsoleUtils.h"
+#include "MessageDispatcher.h"
+#include "MessageTypes.h"
 using namespace std;
 
 #include "messaging/Telegram.h"
@@ -21,7 +25,7 @@ using namespace std;
 //At this value, game entities pass out
 const int KOThreshold = 0;
 
-static std::mutex mu;
+static std::shared_timed_mutex mu;
 
 class BaseGameEntity
 {
@@ -112,9 +116,21 @@ public:
   }
 
   void sharedPrint(string writer, string mes, WORD colors) {
-	  std::lock_guard<std::mutex> guard(mu);
+	  /*std::lock_guard<std::mutex> guard(mu);*/
+	  std::unique_lock<std::shared_timed_mutex> lock(mu);
 	  SetTextColor(colors);
 	  cout << "\n" << writer << " : " << mes << endl;
+  }
+
+  void sharedPrintTelegram(int sender, int recipient, message_type message) {
+	  /*std::lock_guard<std::mutex> guard(mu);*/
+	  std::shared_lock<std::shared_timed_mutex> lock(mu);
+	  SetTextColor(BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	  Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+		  sender,        //ID of sender
+		  recipient,            //ID of recipient
+		  message,   //the message
+		  NO_ADDITIONAL_INFO);
   }
 };
 
