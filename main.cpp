@@ -9,7 +9,7 @@
 #include "MessageDispatcher.h"
 #include "misc/ConsoleUtils.h"
 #include "EntityNames.h"
-#define LOOP 20
+#define LOOP 100
 using namespace std;
 
 

@@ -36,11 +36,17 @@ MessageDispatcher* MessageDispatcher::Instance()
 void MessageDispatcher::Discharge(BaseGameEntity* pReceiver,
                                   const Telegram& telegram)
 {
-  if (!pReceiver->HandleMessage(telegram))
-  {
-    //telegram could not be handled
-    cout << "Message not handled";
-  }
+	if (pReceiver != NULL) {
+		if (!pReceiver->HandleMessage(telegram))
+		{
+			//telegram could not be handled
+			cout << "Message not handled";
+		}
+	}
+	else {
+		cout << "receveur indisponible";
+	}
+  
 }
 
 //---------------------------- DispatchMessage ---------------------------
@@ -80,7 +86,13 @@ void MessageDispatcher::DispatchMessage(double  delay,
          << ". Msg is "<< MsgToStr(msg);
 
     //send the telegram to the recipient
-    Discharge(pReceiver, telegram);
+	try {
+		Discharge(pReceiver, telegram);
+	}
+	catch (const char* mes) {
+		cout <<mes << '\n';
+	}
+    
   }
 
   //else calculate the time when the telegram should be dispatched
