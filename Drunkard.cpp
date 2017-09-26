@@ -9,9 +9,9 @@ bool Drunkard::HandleMessage(const Telegram& msg)
 }
 
 
-void Drunkard::Update()
+void Drunkard::Update(int loop)
 {
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < loop; i++) {
 		m_pStateMachine->Update();
 	}
 	

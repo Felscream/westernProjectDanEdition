@@ -79,7 +79,7 @@ public:
   ~Miner(){delete m_pStateMachine;}
 
   //this must be implemented
-  void Update();
+  void Update(int loop);
 
   //so must this
   virtual bool  HandleMessage(const Telegram& msg);

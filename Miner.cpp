@@ -6,9 +6,9 @@ bool Miner::HandleMessage(const Telegram& msg)
 }
 
 
-void Miner::Update()
+void Miner::Update(int loop)
 {
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < loop; i++) {
 		m_iThirst += 1;
 		m_pStateMachine->Update();
 	}

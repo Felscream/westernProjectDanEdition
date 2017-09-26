@@ -49,31 +49,6 @@ public:
 	virtual bool OnMessage(Drunkard* agent, const Telegram& msg);
 };
 
-class Creation : public State<Drunkard>
-{
-private:
-
-	Creation() {}
-
-	//copy ctor and assignment should be private
-	Creation(const Creation&);
-	Creation& operator=(const Creation&);
-
-public:
-
-	//this is a singleton
-	static Creation* Instance();
-
-	virtual void Enter(Drunkard* Drunkard);
-
-	virtual void Execute(Drunkard* Drunkard);
-
-	virtual void Exit(Drunkard* Drunkard);
-
-	virtual bool OnMessage(Drunkard* agent, const Telegram& msg);
-
-};
-
 class QuenchThirstDan : public State<Drunkard>{
 private:
 

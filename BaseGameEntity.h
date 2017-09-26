@@ -14,6 +14,7 @@
 #include <thread>
 #include <mutex>
 #include <shared_mutex>
+#include <condition_variable>
 
 #include "misc/ConsoleUtils.h"
 #include "MessageDispatcher.h"
@@ -63,7 +64,7 @@ public:
   virtual ~BaseGameEntity(){}
 
   //all entities must implement an update function
-  virtual void  Update()=0;
+  virtual void  Update(int loop)=0;
 
   //all entities can communicate using messages. They are sent
   //using the MessageDispatcher singleton class

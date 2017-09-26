@@ -64,7 +64,7 @@ public:
 		//set up state machine
 		m_pStateMachine = new StateMachine<Drunkard>(this);
 
-		m_pStateMachine->SetCurrentState(Creation::Instance());
+		m_pStateMachine->SetCurrentState(QuenchThirstDan::Instance());
 
 		m_pStateMachine->SetGlobalState(DrunkardGlobalState::Instance());
 
@@ -74,7 +74,7 @@ public:
 	~Drunkard() { delete m_pStateMachine; }
 
 	//this must be implemented
-	void Update();
+	void Update(int loop);
 
 	//so must this
 	virtual bool  HandleMessage(const Telegram& msg);

@@ -9,6 +9,7 @@
 #include "MessageDispatcher.h"
 #include "misc/ConsoleUtils.h"
 #include "EntityNames.h"
+#define LOOP 20
 using namespace std;
 
 
@@ -40,9 +41,9 @@ int main()
 
   //run Bob and Elsa through a few Update calls
 
-	thread danThread(&Drunkard::Update, Dan);
-	thread bobThread(&Miner::Update, Bob);
-	thread elsaThread(&MinersWife::Update, Elsa);
+	thread danThread(&Drunkard::Update,Dan,LOOP);
+	thread bobThread(&Miner::Update,Bob, LOOP);
+	thread elsaThread(&MinersWife::Update, Elsa, LOOP);
 	
 	danThread.join();
 	cout << "\nDan a finit";
