@@ -2,11 +2,9 @@
 #define DRUNKARD_H
 //------------------------------------------------------------------------
 //
-//  Name:   Miner.h
+//  Name:   Drunkard.h
 //
-//  Desc:   A class defining a goldminer.
-//
-//  Author: Mat Buckland 2002 (fup@ai-junkie.com)
+//  Desc:   A class defining a drunk man.
 //
 //------------------------------------------------------------------------
 #include <string>
@@ -34,26 +32,30 @@ private:
 	StateMachine<Drunkard>*  m_pStateMachine;
 
 	location_type   m_Location;
-	//the higher the value, the thirstier the miner
+	//Alcohol level of Dan
 	int                   m_iDrunkness;
 
-	//the higher the value, the more tired the miner
-	//int                   m_iKO;
-
+	//Dan knows if bob is in the saloon or not
 	bool                  bobInSaloon;
 
+	//Dan can tell jokes
 	char*					jokes[5];
 
 public:
 
 	Drunkard(int id) :m_Location(saloon),
+		//Level of drunkness start at 0
 		m_iDrunkness(0),
+
+		//At the begining bob is not in the saloon
 		bobInSaloon(false),
 		BaseGameEntity(id)
 
 	{
 		MaxHP = 5;
-		m_iKO = MaxHP;
+
+		//m_iKO represents Dan's HP, at 0 he will go to sleep
+		m_iKO = MaxHP; //Dan start with 5Hp
 
 		jokes[0] = ": I'm not an alcoholic. Alcoholics need a drink, but I already have one.";
 		jokes[1] = ": Alcohol is my worst enemy, but the bible says to love your enemy";
@@ -64,7 +66,7 @@ public:
 		//set up state machine
 		m_pStateMachine = new StateMachine<Drunkard>(this);
 
-		m_pStateMachine->SetCurrentState(Creation::Instance());
+		m_pStateMachine->SetCurrentState(QuenchThirstDan::Instance());
 
 		m_pStateMachine->SetGlobalState(DrunkardGlobalState::Instance());
 
@@ -85,23 +87,33 @@ public:
 
 
 	//-------------------------------------------------------------accessors
-	//location_type Location()const { return m_Location; }
 
-	bool          isKO()const;
-	//void          DecreaseKO() { m_iKO -= 1; if (m_iKO < 0) { m_iKO = 0; } }
+	//isKO permits to know if Dan is KO (0 HP)
+	bool          isKO()const; 
+
 	int			  getKO() { return m_iKO; }
 
-	bool          isDrunk()const;
-	char*		  getJoke(int i) { return jokes[i]; }
-	void          DrinkAWhiskey() { m_iDrunkness += 1; }
-	void		  Sleep() { 
-		this->recoverKO();
-		m_iDrunkness -= 1; }
+	bool          isDrunk()const; 
 
+	char*		  getJoke(int i) { return jokes[i]; }
+
+	//When Dan drinks, he increases his level of drunkness
+	void          DrinkAWhiskey() { m_iDrunkness += 1; }
+
+	//When Dan sleeps, he win 1 HP per round and decreases his level of drunkness
+	void		  Sleep() { 
+		this->recoverKO(); //define in BasGameEntity.h
+		m_iDrunkness -= 1; 
+	}
+
+	//To know if Dan is sleeping
 	bool		  isSleeping();
+
 	int			  getDrunkness() { return m_iDrunkness; }
-	bool		  bobIsInTheSaloon() { return bobInSaloon; }
+
+	//Change th value of the boolean when Bob leaves or enters in the saloon
 	void		  setBobInSaloon() { bobInSaloon = !bobInSaloon; }
+
 	bool		  getBobInSaloon() { return bobInSaloon; }
 };
 

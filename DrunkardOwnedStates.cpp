@@ -18,7 +18,9 @@ extern std::ofstream os;
 #define cout os
 #endif
 
-//Dan global state
+//
+//Dan Global State
+//
 DrunkardGlobalState* DrunkardGlobalState::Instance()
 {
 	static DrunkardGlobalState instance;
@@ -28,9 +30,7 @@ DrunkardGlobalState* DrunkardGlobalState::Instance()
 
 void DrunkardGlobalState::Enter(Drunkard* pDrunkard)
 {
-	//if the miner is not already located at the goldmine, he must
-	//change location to the gold mine
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": DrunkardGlobalState - Enter()";
+	
 }
 
 void DrunkardGlobalState::Execute(Drunkard* drunkard)
@@ -40,11 +40,12 @@ void DrunkardGlobalState::Execute(Drunkard* drunkard)
 
 void DrunkardGlobalState::Exit(Drunkard* pDrunkard)
 {
-	//if the miner is not already located at the goldmine, he must
-	//change location to the gold mine
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": DrunkardGlobalState - Exit()";
+	
 }
 
+//Thins function will permit to Dan to know if Bob is in the saloon or not
+//Each time bob leaves or enter in the saloon, he will send a telegram to Dan
+//Each time Dan change the value of bobInSaloon to true or false
 bool DrunkardGlobalState::OnMessage(Drunkard* drunkard, const Telegram& msg)
 {
 	SetTextColor(BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_BLUE);
@@ -86,43 +87,7 @@ bool DrunkardGlobalState::OnMessage(Drunkard* drunkard, const Telegram& msg)
 }
 
 // ---------------------------
-Creation* Creation::Instance()
-{
-static Creation instance;
 
-return &instance;
-}
-
-void Creation::Enter(Drunkard* pDrunkard)
-{
-	//if the miner is not already located at the goldmine, he must
-	//change location to the gold mine
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Creation - Enter()";
-}
-
-
-void Creation::Execute(Drunkard* pDrunkard)
-{
-	//Now the miner is at the goldmine he digs for gold until he
-	//is carrying in excess of MaxNuggets. If he gets thirsty during
-	//his digging he packs up work for a while and changes state to
-	//gp to the saloon for a whiskey.
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Creation - Execute()";
-	pDrunkard->GetFSM()->ChangeState(QuenchThirstDan::Instance());
-}
-
-void Creation::Exit(Drunkard* pDrunkard)
-{
-	//Now the miner is at the goldmine he digs for gold until he
-	//is carrying in excess of MaxNuggets. If he gets thirsty during
-	//his digging he packs up work for a while and changes state to
-	//gp to the saloon for a whiskey.
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Drunkard - Exit()";
-}
-
-bool Creation::OnMessage(Drunkard* pDrukard, const Telegram& msg) {
-	return false;
-}
 
 QuenchThirstDan* QuenchThirstDan::Instance()
 {
@@ -133,18 +98,15 @@ QuenchThirstDan* QuenchThirstDan::Instance()
 
 void QuenchThirstDan::Enter(Drunkard* pDrunkard)
 {
-	//if the miner is not already located at the goldmine, he must
-	//change location to the gold mine
+	//Dan is going to start to drink some alcohol
 	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Time to drink som' good ol' whiskey";
 }
 
 
 void QuenchThirstDan::Execute(Drunkard* pDrunkard)
 {
-	//Now the miner is at the goldmine he digs for gold until he
-	//is carrying in excess of MaxNuggets. If he gets thirsty during
-	//his digging he packs up work for a while and changes state to
-	//gp to the saloon for a whiskey.
+	//Dan is drinking, his level of drunkness is increasing
+	//If Dan is too drunk, we will change state and start telling stories
 	pDrunkard->DrinkAWhiskey();
 	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Drinking...";
 
@@ -155,16 +117,75 @@ void QuenchThirstDan::Execute(Drunkard* pDrunkard)
 
 void QuenchThirstDan::Exit(Drunkard* pDrunkard)
 {
-	//Now the miner is at the goldmine he digs for gold until he
-	//is carrying in excess of MaxNuggets. If he gets thirsty during
-	//his digging he packs up work for a while and changes state to
-	//gp to the saloon for a whiskey.
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Drunkard - Exit()";
+	
 }
 
 bool QuenchThirstDan::OnMessage(Drunkard* pDrukard, const Telegram& msg) {
 	return false;
 }
+
+//----------------------
+
+
+TellingStories* TellingStories::Instance()
+{
+	static TellingStories instance;
+	return &instance;
+}
+
+void TellingStories::Enter(Drunkard* pDrunkard)
+{
+	
+}
+
+void TellingStories::Execute(Drunkard* pDrunkard)
+{
+	//If Bob is in the saloon, Dan wants too fight Bob. He will send a telegram to Bob and change state
+	//Else he continues to drink, as he already reachs his level max of drunkness, he starts to loose HP (1by round)
+	//He also says some jokes until he has 0 HP then he will change state to sleep
+	SetTextColor(BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Telling stories execute";
+	if (pDrunkard->getBobInSaloon()) {
+		//cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": sending a message to bob";
+		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Oh Bob come on, hips; i will kick your a** ";
+		//start fight with Bob
+		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
+			pDrunkard->ID(),        //ID of sender
+			ent_Miner_Bob,            //ID of recipient
+			Msg_Fight,   //the message
+			NO_ADDITIONAL_INFO);
+		
+		pDrunkard->GetFSM()->ChangeState(FightWithBob::Instance());
+
+		
+
+	}
+	else {
+		pDrunkard->DecreaseKO(pDrunkard->bruise);
+		int randJoke = rand() % 5;
+
+		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << pDrunkard->getJoke(randJoke);
+	}
+
+	if (pDrunkard->isKO()) {
+		pDrunkard->GetFSM()->ChangeState(SleepAndSoberUpDan::Instance());
+	}
+
+}
+
+void TellingStories::Exit(Drunkard* pDrunkard)
+{
+	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Telling stories exit";
+}
+
+bool TellingStories::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
+	return false;
+}
+
+
+//---------------------
 
 
 FightWithBob* FightWithBob::Instance()
@@ -176,6 +197,7 @@ FightWithBob* FightWithBob::Instance()
 
 void FightWithBob::Enter(Drunkard* pDrunkard)
 {
+	//Dan starts a fight with Bob
 	SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Fighting -> " << pDrunkard->getKO() << " HP";
 }
@@ -183,7 +205,8 @@ void FightWithBob::Enter(Drunkard* pDrunkard)
 
 void FightWithBob::Execute(Drunkard* pDrunkard)
 {
-	
+	//Dan is loosing HP when he fights
+	//If Dan is KO, we will send a telegram and change state to sleep
 	if (pDrunkard->isKO()) {
 		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Dam' he got me";
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
@@ -197,6 +220,8 @@ void FightWithBob::Execute(Drunkard* pDrunkard)
 
 	//cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": " << "Dan : " << pDrunkard->getKO() << " HP";
 	
+
+	//Dan can hit Bob and deals 1,2 or 4 HP damage, depends on his luck.
 	double hitType = RandFloat();
 	if (hitType <= 0.3) {
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
@@ -230,14 +255,12 @@ void FightWithBob::Execute(Drunkard* pDrunkard)
 
 void FightWithBob::Exit(Drunkard* pDrunkard)
 {
-	//Now the miner is at the goldmine he digs for gold until he
-	//is carrying in excess of MaxNuggets. If he gets thirsty during
-	//his digging he packs up work for a while and changes state to
-	//gp to the saloon for a whiskey.
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": FightWithBob - Exit()";
+	
 }
 
-bool FightWithBob::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
+//Bob can hit Dan too, so to koww if dan is hit, bob will send a telegram to inform Dan how many HP he losed
+bool FightWithBob::OnMessage(Drunkard* pDrunkard, const Telegram& msg) 
+{
 	switch (msg.Msg) {
 		case Msg_BobHitsDanBruise:
 			pDrunkard->DecreaseKO(pDrunkard->bruise);
@@ -256,33 +279,27 @@ bool FightWithBob::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
 	return false;
 }
 
+
+//----------------------
+
+
 SleepAndSoberUpDan* SleepAndSoberUpDan::Instance()
 {
 	static SleepAndSoberUpDan instance;
 	return &instance;
 }
 
-
-
 void SleepAndSoberUpDan::Enter(Drunkard* pDrunkard)
 
 {
-	//if the miner is not already located at the goldmine, he must
-	//change location to the gold mine
+	//Dan sleep when he is KO (0HP)
 	SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Sleep time i guess... THUMP ... ZZZZZZZZZZZZ";
 }
 
-
-
-
-
 void SleepAndSoberUpDan::Execute(Drunkard* pDrunkard)
 {
-	//Now the miner is at the goldmine he digs for gold until he
-	//is carrying in excess of MaxNuggets. If he gets thirsty during
-	//his digging he packs up work for a while and changes state to
-	//gp to the saloon for a whiskey.
+	//When Dan Sleeps he gains HP (1by round) and sober up
 	if (!pDrunkard->needToRecoverFromKO()) {
 		pDrunkard->GetFSM()->ChangeState(QuenchThirstDan::Instance());
 	}
@@ -290,24 +307,13 @@ void SleepAndSoberUpDan::Execute(Drunkard* pDrunkard)
 		pDrunkard->Sleep();
 		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Sleeping... -> drunkness : " << pDrunkard->getDrunkness();
 	}
-	
-
-	
-
 }
-
-
 
 void SleepAndSoberUpDan::Exit(Drunkard* pDrunkard)
 {
-	//Now the miner is at the goldmine he digs for gold until he
-	//is carrying in excess of MaxNuggets. If he gets thirsty during
-	//his digging he packs up work for a while and changes state to
-	//gp to the saloon for a whiskey.
+	//When his HP reachs MaxHP, he wkaes up
 	cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": What a great sleep i had!!";
 }
-
-
 
 bool SleepAndSoberUpDan::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
 	return false;
@@ -315,77 +321,3 @@ bool SleepAndSoberUpDan::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
 
 }
 
-TellingStories* TellingStories::Instance()
-{
-	static TellingStories instance;
-	return &instance;
-}
-
-
-
-void TellingStories::Enter(Drunkard* pDrunkard)
-
-{
-	//if the miner is not already located at the goldmine, he must
-	//change location to the gold mine
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Telling stories enter";
-}
-
-
-
-
-
-void TellingStories::Execute(Drunkard* pDrunkard)
-{
-	//Now the miner is at the goldmine he digs for gold until he
-	//is carrying in excess of MaxNuggets. If he gets thirsty during
-	//his digging he packs up work for a while and changes state to
-	//gp to the saloon for a whiskey.
-	SetTextColor(BACKGROUND_BLUE | FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Telling stories execute";
-	if (pDrunkard->bobIsInTheSaloon()) {
-		//cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": sending a message to bob";
-		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << ": Oh Bob come on, hips; i will kick your a** ";
-		//start fight with Bob
-		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-			pDrunkard->ID(),        //ID of sender
-			ent_Miner_Bob,            //ID of recipient
-			Msg_Fight,   //the message
-			NO_ADDITIONAL_INFO);
-		
-		pDrunkard->GetFSM()->ChangeState(FightWithBob::Instance());
-
-		
-
-	}
-	else {
-		pDrunkard->DecreaseKO(pDrunkard->bruise);
-		int randJoke = rand() % 5;
-
-		SetTextColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		cout << "\n" << GetNameOfEntity(pDrunkard->ID()) << pDrunkard->getJoke(randJoke);
-	}
-
-	if (pDrunkard->isKO()) {
-		pDrunkard->GetFSM()->ChangeState(SleepAndSoberUpDan::Instance());
-	}
-
-}
-
-
-
-void TellingStories::Exit(Drunkard* pDrunkard)
-{
-	//Now the miner is at the goldmine he digs for gold until he
-	//is carrying in excess of MaxNuggets. If he gets thirsty during
-	//his digging he packs up work for a while and changes state to
-	//gp to the saloon for a whiskey.
-	//cout << "\n " << GetNameOfEntity(pDrunkard->ID()) << ": Telling stories exit";
-}
-
-
-
-bool TellingStories::OnMessage(Drunkard* pDrunkard, const Telegram& msg) {
-	return false;
-}

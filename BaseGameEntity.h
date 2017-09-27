@@ -24,8 +24,6 @@ private:
   //every entity must have a unique identifying number
   int          m_ID;
 
-  
-	
   //this is the next valid ID. Each time a BaseGameEntity is instantiated
   //this value is updated
   static int  m_iNextValidID;
@@ -37,10 +35,11 @@ private:
   void SetID(int val);
 
 protected:
-
+  //m_iKO is Dans's HP
 	int m_iKO;
+
+  //MaxHP is the max HP that Dan can have
 	int MaxHP;
-	//enum damageType :int { bruise = 1, hit = 2, critical = 4 };
 
 public:
 
@@ -61,7 +60,6 @@ public:
   int           ID()const{return m_ID;}  
 
   //Decrease HP lightly
-
   void DecreaseKO(damageType damage) {
 	  this->m_iKO -= damage;
   }
@@ -74,6 +72,7 @@ public:
 	return true;
   }
 
+  //Check if the entity is full HP
   bool needToRecoverFromKO() {
 	  if (m_iKO < this->MaxHP) {
 		  return true;
@@ -81,6 +80,7 @@ public:
 	  return false;
   }
 
+  //Check if the entity is KO (0HP)
   void checkKO() {
 	  if (this->m_iKO < 0) {
 		  this->m_iKO = 0;
@@ -95,6 +95,7 @@ public:
 	  }
   }
 
+  //return HP of the entity
   int getKO() {
 	  return this->m_iKO;
   }

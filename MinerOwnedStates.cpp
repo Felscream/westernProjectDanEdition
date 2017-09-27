@@ -265,6 +265,7 @@ void QuenchThirst::Exit(Miner* pMiner)
 
 bool QuenchThirst::OnMessage(Miner* pMiner, const Telegram& msg)
 {
+  //If Dan is too drunk, Bob will fight with Dan
 	switch (msg.Msg) {
 		case Msg_Fight: {
 			pMiner->GetFSM()->ChangeState(FightWithDan::Instance());
@@ -309,6 +310,11 @@ bool EatStew::OnMessage(Miner* pMiner, const Telegram& msg)
   return false;
 }
 
+
+
+//------------------------------
+
+
 FightWithDan* FightWithDan::Instance()
 {
 	static FightWithDan instance;
@@ -319,6 +325,7 @@ FightWithDan* FightWithDan::Instance()
 
 void FightWithDan::Enter(Miner* pMiner)
 {
+  //Bob starts a fight with Dan
 	SetTextColor(FOREGROUND_RED | FOREGROUND_INTENSITY);
 	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": Gotta teach da' punk it's lesson!";
 	cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": Fighting -> " << pMiner->getKO() << " HP";
@@ -326,7 +333,8 @@ void FightWithDan::Enter(Miner* pMiner)
 
 void FightWithDan::Execute(Miner* pMiner)
 {
-	
+	//Bob loses HP when he fights, so if he is KO he will return to home
+  //He can hit Dan and deals 1 or 2HP damage to Dan, depends on his luck
 	if (pMiner->isKO()) {
 		pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
 		Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
@@ -367,24 +375,25 @@ void FightWithDan::Exit(Miner* pMiner)
 
 bool FightWithDan::OnMessage(Miner* pMiner, const Telegram& msg)
 {
+  //Dan also hit Bob, he sends telegram so Bob can know how many HP he losed
 	switch (msg.Msg) {
-	case Msg_DanHitsBobBruise:
-		pMiner->DecreaseKO(pMiner->bruise);
-		pMiner->checkKO();
-		return true;
+  	case Msg_DanHitsBobBruise:
+  		pMiner->DecreaseKO(pMiner->bruise);
+  		pMiner->checkKO();
+  		return true;
 
-	case Msg_DanHitsBob:
-		pMiner->DecreaseKO(pMiner->hit);
-		pMiner->checkKO();
-		return true;
+  	case Msg_DanHitsBob:
+  		pMiner->DecreaseKO(pMiner->hit);
+  		pMiner->checkKO();
+  		return true;
 
-	case Msg_DanHitsBobCritical:
-		pMiner->DecreaseKO(pMiner->critical);
-		pMiner->checkKO();
-		return true;
-	case Msg_DanIsKO:
-		pMiner->GetFSM()->ChangeState(QuenchThirst::Instance());
-		return true;
+  	case Msg_DanHitsBobCritical:
+  		pMiner->DecreaseKO(pMiner->critical);
+  		pMiner->checkKO();
+  		return true;
+  	case Msg_DanIsKO:
+  		pMiner->GetFSM()->ChangeState(QuenchThirst::Instance());
+  		return true;
 	}
 	return false;
 }
