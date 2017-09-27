@@ -79,7 +79,7 @@ public:
   ~Miner(){delete m_pStateMachine;}
 
   //this must be implemented
-  void Update(int loop);
+  void Update();
 
   //so must this
   virtual bool  HandleMessage(const Telegram& msg);
@@ -99,6 +99,7 @@ public:
   bool          PocketsFull()const{return m_iGoldCarried >= MaxNuggets;}
 
   bool          Fatigued()const;
+  //decrease tiredness by 1 and if it become <0 it is set at 0
   void          DecreaseFatigue() { 
 	  m_iFatigue -= 1; 
 	  if (m_iFatigue < 0) { 
@@ -113,6 +114,8 @@ public:
   void          AddToWealth(int val);
 
   bool          Thirsty()const; 
+  //decrease the thrist by 3 for each drink buyed. 
+  //The price of a drink has been set at 0.5 due to an exceptional harvest so bob don't become broke every time
   void          BuyAndDrinkAWhiskey(){
 	  m_iThirst -= 3;
 	  if (m_iThirst < 0) {

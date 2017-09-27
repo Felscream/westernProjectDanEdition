@@ -35,6 +35,7 @@ void EnterMineAndDigForNugget::Enter(Miner* pMiner)
   //change location to the gold mine
   if (pMiner->Location() != goldmine)
   {
+	  
 	pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Walkin' to the goldmine", FOREGROUND_RED | FOREGROUND_INTENSITY);
     pMiner->ChangeLocation(goldmine);
   }
@@ -151,12 +152,7 @@ void GoHomeAndSleepTilRested::Enter(Miner* pMiner)
     pMiner->ChangeLocation(shack); 
 
     //let the wife know I'm home
-	pMiner->sharedPrintTelegram(pMiner->ID(), ent_Elsa, Msg_HiHoneyImHome);
-    //Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-    //                          pMiner->ID(),        //ID of sender
-    //                          ent_Elsa,            //ID of recipient
-    //                          Msg_HiHoneyImHome,   //the message
-    //                          NO_ADDITIONAL_INFO);    
+	pMiner->sharedPrintTelegram(pMiner->ID(), ent_Elsa, Msg_HiHoneyImHome);   
   }
 }
 
@@ -224,11 +220,7 @@ void QuenchThirst::Enter(Miner* pMiner)
 	pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Boy, ah sure is thusty! Walking to the saloon", FOREGROUND_RED | FOREGROUND_INTENSITY);
   }
   pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_ImInTheSaloon);
-  //Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-	 // pMiner->ID(),        //ID of sender
-	 // ent_Dan,            //ID of recipient
-	 // Msg_ImInTheSaloon,   //the message
-	 // NO_ADDITIONAL_INFO);
+
 }
 
 void QuenchThirst::Execute(Miner* pMiner)
@@ -245,11 +237,6 @@ void QuenchThirst::Execute(Miner* pMiner)
 void QuenchThirst::Exit(Miner* pMiner)
 { 
 	pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_ImLeavingTheSaloon);
-	//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-	//	pMiner->ID(),        //ID of sender
-	//	ent_Dan,            //ID of recipient
-	//	Msg_ImLeavingTheSaloon,   //the message
-	//	NO_ADDITIONAL_INFO);
 }
 
 
@@ -320,32 +307,19 @@ void FightWithDan::Execute(Miner* pMiner)
 	if (pMiner->isKO()) {
 		pMiner->GetFSM()->ChangeState(GoHomeAndSleepTilRested::Instance());
 		pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_BobIsKO);
-		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-		//	pMiner->ID(),        //ID of sender
-		//	ent_Dan,            //ID of recipient
-		//	Msg_BobIsKO,   //the message
-		//	NO_ADDITIONAL_INFO);
 		return;
 	}
 
 	//cout << "\n" << GetNameOfEntity(pMiner->ID()) << ": " << "Bob : " << pMiner->getKO()<<" HP";
 	if (RandFloat() <= 0.6) {
 		pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_BobHitsDanBruise);
-		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-		//	pMiner->ID(),        //ID of sender
-		//	ent_Dan,            //ID of recipient
-		//	Msg_BobHitsDanBruise,   //the message
-		//	NO_ADDITIONAL_INFO);
+		
 
 		pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Hits Dan for 1", FOREGROUND_RED | FOREGROUND_INTENSITY);
 	}
 	else {
 		pMiner->sharedPrintTelegram(pMiner->ID(), ent_Dan, Msg_BobHitsDan);
-		//Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
-		//	pMiner->ID(),        //ID of sender
-		//	ent_Dan,            //ID of recipient
-		//	Msg_BobHitsDan,   //the message
-		//	NO_ADDITIONAL_INFO);
+
 
 		pMiner->sharedPrint(GetNameOfEntity(pMiner->ID()), (string) "Hits Dan for 2", FOREGROUND_RED | FOREGROUND_INTENSITY);
 	}

@@ -6,9 +6,9 @@ bool MinersWife::HandleMessage(const Telegram& msg)
 }
 
 
-void MinersWife::Update(int loop)
+void MinersWife::Update()
 {
-	for (int i = 0; i < loop; i++) {
+	for (int i = 0; i < 10; i++) {
 		m_pStateMachine->Update();
 	}
 

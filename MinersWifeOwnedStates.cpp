@@ -164,11 +164,7 @@ void CookStew::Enter(MinersWife* wife)
     //send a delayed message myself so that I know when to take the stew
     //out of the oven
 	wife->sharedPrintTelegram(wife->ID(), wife->ID(), Msg_StewReady);
-    //Dispatch->DispatchMessage(1.5,                  //time delay
-    //                          wife->ID(),           //sender ID
-    //                          wife->ID(),           //receiver ID
-    //                          Msg_StewReady,        //msg
-    //                          NO_ADDITIONAL_INFO); 
+    
 
     wife->SetCooking(true);
   }
@@ -200,12 +196,7 @@ bool CookStew::OnMessage(MinersWife* wife, const Telegram& msg)
 
       //let hubby know the stew is ready
 	  wife->sharedPrintTelegram(wife->ID(), ent_Miner_Bob, Msg_StewReady);
-      /*Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY,
-                                wife->ID(),
-                                ent_Miner_Bob,
-                                Msg_StewReady,
-                                NO_ADDITIONAL_INFO);
-*/
+      
       wife->SetCooking(false);
 
       wife->GetFSM()->ChangeState(DoHouseWork::Instance());               

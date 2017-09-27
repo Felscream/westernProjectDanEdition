@@ -21,10 +21,7 @@ struct Telegram;
 
 //------------------------------------------------------------------------
 //
-//  In this state the Drunkard will walk to a goldmine and pick up a nugget
-//  of gold. If the Drunkard already has a nugget of gold he'll change state
-//  to VisitBankAndDepositGold. If he gets thirsty he'll change state
-//  to QuenchThirst
+//Class used for receiving a telegram in all possible states
 //------------------------------------------------------------------------
 class DrunkardGlobalState : public State<Drunkard> {
 private:
@@ -49,6 +46,34 @@ public:
 	virtual bool OnMessage(Drunkard* agent, const Telegram& msg);
 };
 
+//Class for the Initialisation of Dan
+class Creation : public State<Drunkard>
+{
+private:
+
+	Creation() {}
+
+	//copy ctor and assignment should be private
+	Creation(const Creation&);
+	Creation& operator=(const Creation&);
+
+public:
+
+	//this is a singleton
+	static Creation* Instance();
+
+	virtual void Enter(Drunkard* Drunkard);
+
+	virtual void Execute(Drunkard* Drunkard);
+
+	virtual void Exit(Drunkard* Drunkard);
+
+	virtual bool OnMessage(Drunkard* agent, const Telegram& msg);
+
+};
+
+//Class for the Drinking state where d	n is going to drink every turn and increase his drunkness. 
+//When the limit is attained, Dan become drunk and pass in TellingStories state 
 class QuenchThirstDan : public State<Drunkard>{
 private:
 
@@ -72,7 +97,11 @@ public:
 
 
 
-
+//Class used for the fighting state between Bob and Dan
+//This state is entered when dan is drunk and bob is in the bar
+//the both hit the other turn by turn with a probability to hit with a lesser hit, normal hit or critical hit
+//when dan win the fight, he continue to tell jokes until he pass out and enter in resting state
+//when dan lose the fight, he enter directly in resting state 
 class FightWithBob : public State<Drunkard> {
 private:
 
@@ -94,6 +123,8 @@ public:
 
 };
 
+//Class used for the resting state after Dan is KO
+//Gradually sober up Dan until he is rested enough to continue to drink
 class SleepAndSoberUpDan : public State<Drunkard> {
 private:
 
@@ -117,7 +148,8 @@ public:
 
 };
 
-
+//Class used for when Dan is drunk and start telling jokes in the saloon
+//Telling jokes decrease the hp bar of Dan by 1 each time until he pass out or that Bob enter the bar and a fight begins
 class TellingStories : public State<Drunkard> {
 private:
 

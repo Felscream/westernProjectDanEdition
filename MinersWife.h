@@ -55,7 +55,7 @@ public:
 
 
   //this must be implemented
-  void          Update(int loop);
+  void          Update();
 
   //so must this
   virtual bool  HandleMessage(const Telegram& msg);

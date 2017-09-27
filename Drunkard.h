@@ -34,14 +34,13 @@ private:
 	StateMachine<Drunkard>*  m_pStateMachine;
 
 	location_type   m_Location;
-	//the higher the value, the thirstier the miner
+	//if the drunkness of Dan exceeds his limit then enter in drunk state and tell jokes
 	int                   m_iDrunkness;
 
-	//the higher the value, the more tired the miner
-	//int                   m_iKO;
-
+	//Bool used to know if Bob is in the saloon or not. Is set when receive a telegram from Bob when he enter or exit the saloon
 	bool                  bobInSaloon;
 
+	//List of jokes that Dan say when he is in drunk state
 	char*					jokes[5];
 
 public:
@@ -64,7 +63,8 @@ public:
 		//set up state machine
 		m_pStateMachine = new StateMachine<Drunkard>(this);
 
-		m_pStateMachine->SetCurrentState(QuenchThirstDan::Instance());
+		//create Dan
+		m_pStateMachine->SetCurrentState(Creation::Instance());
 
 		m_pStateMachine->SetGlobalState(DrunkardGlobalState::Instance());
 
@@ -74,7 +74,7 @@ public:
 	~Drunkard() { delete m_pStateMachine; }
 
 	//this must be implemented
-	void Update(int loop);
+	void Update();
 
 	//so must this
 	virtual bool  HandleMessage(const Telegram& msg);
@@ -85,24 +85,29 @@ public:
 
 
 	//-------------------------------------------------------------accessors
-	//location_type Location()const { return m_Location; }
 
 	bool          isKO()const;
-	//void          DecreaseKO() { m_iKO -= 1; if (m_iKO < 0) { m_iKO = 0; } }
 	int			  getKO() { return m_iKO; }
 
 	bool          isDrunk()const;
+	//return a joke
 	char*		  getJoke(int i) { return jokes[i]; }
+	//increase the drunkness by 1
 	void          DrinkAWhiskey() { m_iDrunkness += 1; }
+	//when KO, sleep increase the hp if not over the limit and decrease the drunkness if > 0
 	void		  Sleep() { 
 		this->recoverKO();
-		m_iDrunkness -= 1; }
+		if (m_iDrunkness > 0) {
+			m_iDrunkness -= 1;
+		}
+	}
 
 	bool		  isSleeping();
 	int			  getDrunkness() { return m_iDrunkness; }
+	//indicate if bob is actually in the saloon
 	bool		  bobIsInTheSaloon() { return bobInSaloon; }
+	//when receiving a telegram from bob that indicate if he's coming in the saloon or exiting change the bool to the opposte
 	void		  setBobInSaloon() { bobInSaloon = !bobInSaloon; }
-	bool		  getBobInSaloon() { return bobInSaloon; }
 };
 
 

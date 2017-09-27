@@ -14,7 +14,6 @@
 #include <thread>
 #include <mutex>
 #include <shared_mutex>
-#include <condition_variable>
 
 #include "misc/ConsoleUtils.h"
 #include "MessageDispatcher.h"
@@ -49,10 +48,10 @@ private:
   void SetID(int val);
 
 protected:
-
+	//the actual hp of an agent, when iKO == 0 or < 0 then the agent is considered KO and must rest
 	int m_iKO;
+	//the Hp max of an agent 
 	int MaxHP;
-	//enum damageType :int { bruise = 1, hit = 2, critical = 4 };
 
 public:
 
@@ -60,11 +59,12 @@ public:
   {
     SetID(id);
   }
+  //the 3 types of hit that Dan or Bob can do in a fight excpet that crit is reserved for Dan
   enum damageType :int { bruise = 1, hit = 2, critical = 4 };
   virtual ~BaseGameEntity(){}
 
   //all entities must implement an update function
-  virtual void  Update(int loop)=0;
+  virtual void  Update()=0;
 
   //all entities can communicate using messages. They are sent
   //using the MessageDispatcher singleton class
@@ -86,6 +86,7 @@ public:
 	return true;
   }
 
+  //check if the IA still need healing when resting from KO state
   bool needToRecoverFromKO() {
 	  if (m_iKO < this->MaxHP) {
 		  return true;
@@ -93,6 +94,7 @@ public:
 	  return false;
   }
 
+  //when the hp bar is < 0 after a hit set the hp bar to 0 to avoid too many resting turns
   void checkKO() {
 	  if (this->m_iKO < 0) {
 		  this->m_iKO = 0;
@@ -107,6 +109,7 @@ public:
 	  }
   }
 
+  //return the tiredness of an agent
   int getKO() {
 	  return this->m_iKO;
   }
@@ -116,15 +119,15 @@ public:
 	  cout << th_id << endl;
   }
 
+  //shared print that the 3 IA are using by taking turns with a shared mutex to avoid text superposition. The color of the text is one of the parameters.
   void sharedPrint(string writer, string mes, WORD colors) {
-	  /*std::lock_guard<std::mutex> guard(mu);*/
 	  std::unique_lock<std::shared_timed_mutex> lock(mu);
 	  SetTextColor(colors);
 	  cout << "\n" << writer << " : " << mes << endl;
   }
 
+  //Shared print telegram to avoid that the telegrams are writed in the middle of other text by the use of a shared mutex
   void sharedPrintTelegram(int sender, int recipient, message_type message) {
-	  /*std::lock_guard<std::mutex> guard(mu);*/
 	  std::shared_lock<std::shared_timed_mutex> lock(mu);
 	  SetTextColor(BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 	  Dispatch->DispatchMessage(SEND_MSG_IMMEDIATELY, //time delay
