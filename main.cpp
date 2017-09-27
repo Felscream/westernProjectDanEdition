@@ -41,9 +41,9 @@ int main()
 
   //run Bob and Elsa through a few Update calls
 
-	thread danThread(&Drunkard::Update,Dan,LOOP);
-	thread bobThread(&Miner::Update,Bob, LOOP);
-	thread elsaThread(&MinersWife::Update, Elsa, LOOP);
+	thread danThread(&Drunkard::Update,Dan);
+	thread bobThread(&Miner::Update,Bob);
+	thread elsaThread(&MinersWife::Update, Elsa);
 	
 	danThread.join();
 	cout << "\nDan a finit";

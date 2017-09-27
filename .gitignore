@@ -8,3 +8,4 @@
 *.opendb
 *.tlog
 *.ilk
+Debug/
